@@ -58,6 +58,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    //games         Game[] <--want to add
 }
 
 model VerificationToken {
@@ -67,3 +68,10 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+// model Game {
+//     id            String    @id @default(cuid())
+//     name          String?
+//     image         String?
+//     user          User      @relation(fields: [id],references: [[id]])
+// }
