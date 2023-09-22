@@ -51,14 +51,14 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String     @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?    @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
-    //games         Game[] <--want to add
+    games         GameUser[]
 }
 
 model VerificationToken {
@@ -69,9 +69,36 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-// model Game {
-//     id            String    @id @default(cuid())
-//     name          String?
-//     image         String?
-//     user          User      @relation(fields: [id],references: [[id]])
-// }
+model Game {
+    id          String          @id @default(cuid())
+    name        String
+    image       String
+    play_time   Int
+    weight      Decimal
+    min_players Int
+    max_players Int
+    mechanics   GameMechanics[]
+    users       GameUser[]
+}
+
+model GameMechanics {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    Game      Game?    @relation(fields: [gameId], references: [id])
+    gameId    String?
+
+    @@index([name])
+}
+
+model GameUser {
+    id      String   @id @default(cuid())
+    user    User     @relation(fields: [userId], references: [id])
+    userId  String
+    game    Game?    @relation(fields: [gameId], references: [id])
+    gameId  String
+    addedOn DateTime @default(now())
+
+    @@unique([userId, gameId])
+}
