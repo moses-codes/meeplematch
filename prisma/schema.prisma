@@ -51,14 +51,15 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String        @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?       @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
-    //games         Game[] <--want to add
+    games         Game[]
+    gameSessions  GameSession[]
 }
 
 model VerificationToken {
@@ -69,9 +70,35 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-// model Game {
-//     id            String    @id @default(cuid())
-//     name          String?
-//     image         String?
-//     user          User      @relation(fields: [id],references: [[id]])
-// }
+model Game {
+    id           String        @id
+    name         String
+    image        String?
+    playTime     Int
+    maxPlayers   Int
+    minPlayers   Int
+    complexity   Float
+    user         User[]
+    mechanics    Mechanic[]
+    gameSessions GameSession[]
+}
+
+//many mechanics bay be tied to many games.
+model Mechanic {
+    id           String @id
+    mechanicText String
+    games        Game[]
+}
+
+//one session to one game
+//one game to many sessions
+model GameSession {
+    id          String  @id
+    comment     String?
+    whoWasThere String?
+    duration    Int?
+    gameId      String  @unique
+    userId      String  @unique
+    game        Game    @relation(fields: [gameId], references: [id])
+    user        User    @relation(fields: [userId], references: [id])
+}
