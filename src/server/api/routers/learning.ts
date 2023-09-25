@@ -6,9 +6,5 @@ import {
 } from "~/server/api/trpc";
 
 export const learningRouter = createTRPCRouter({
-    gugu: publicProcedure
-        .query(() => {
-            console.log('hehe')
-        }),
 
 });

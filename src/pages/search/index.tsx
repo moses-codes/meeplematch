@@ -12,6 +12,13 @@ type FormProps = {
 export default function Home() {
     const hello = api.learning.gugu.useQuery();
 
+    const baseURLSearch = "https://boardgamegeek.com//xmlapi2/search?query="
+    const baseURLInfo = "https://boardgamegeek.com//xmlapi2/thing?id="
+
+    const boardGameData = fetch("https://boardgamegeek.com//xmlapi2/thing?id=174430")
+        .then(response => response.text())
+        .then(data => console.log(data))
+
     console.log(hello)
 
     return (
