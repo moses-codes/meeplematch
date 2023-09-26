@@ -6,9 +6,6 @@ import Layout from "~/components/layout/Layout";
 import { api } from "~/utils/api";
 
 export default function Home() {
-    const hello = api.learning.gugu.useQuery();
-
-    console.log(hello)
 
     return (
         <>
