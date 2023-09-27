@@ -1,7 +1,11 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import React, { useState } from "react";
 import Layout from "~/components/layout/Layout";
+
+import SearchResult from "~/components/search/SearchResult";
+
 
 import { api } from "~/utils/api";
 
@@ -9,10 +13,30 @@ type FormProps = {
     type: string
 }
 
-export default function Home() {
-    const hello = api.learning.gugu.useQuery();
+export default function Search() {
 
-    console.log(hello)
+    interface SearchResult {
+        title: string;
+        id: number;
+        // Add more properties as needed
+    }
+
+    const [searchInput, setSearchInput] = useState('')
+    const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault()
+        let results: SearchResult[] = await boardGameSearch(searchInput)
+        setSearchResults(results)
+    }
+
+    let searchResultList = (
+        <ul>
+            {searchResults.map((result) => {
+                return <SearchResult title={result.title} id={result.id} />
+            })}
+        </ul>
+    )
 
     return (
         <>
@@ -24,8 +48,20 @@ export default function Home() {
                 </Head>
                 <main className=" flex min-h-screen flex-col items-center justify-center bg-slate-300">
                     <h1>search</h1>
+                    <form onSubmit={handleSubmit} className="flex ">
+                        <input type="text"
+                            placeholder="Type here"
+                            className="input input-bordered w-full max-w-xs"
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
+                        />
+                        <button className="btn btn-outline btn-primary"
+                            type="submit"
+                        >search</button>
+                    </form>
 
-                    <AuthShowcase></AuthShowcase>
+                    {searchResults && searchResultList
+                    }
                 </main>
             </Layout>
         </>
@@ -55,4 +91,28 @@ function AuthShowcase() {
             </button>
         </div>
     );
+}
+
+async function boardGameSearch(input: String) {
+    const baseURLSearch = "https://boardgamegeek.com//xmlapi2/search?query="
+
+    const searchResults = await fetch(baseURLSearch + input)
+        .then(response => response.text())
+        .then(data => {
+            // console.log(data)
+            return data
+        })
+
+    let xmlDocument = new DOMParser().parseFromString(searchResults, "text/xml")
+    let boardGameResults = xmlDocument.querySelectorAll("item");
+
+    let boardGames = []
+
+    for (let game of boardGameResults) {
+        let title = game.querySelector('name')?.getAttribute("value")
+        let id = game.getAttribute('id')
+        boardGames.push({ id: id, title: title })
+    }
+
+    return boardGames
 }
