@@ -6,7 +6,8 @@ import Layout from "~/components/layout/Layout";
 import { api } from "~/utils/api";
 
 export default function Home() {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const hello = api.example.getAll.useQuery()
+  console.log(hello)
 
 
   return (
@@ -48,7 +49,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col items-center gap-2">
               <p className="text-2xl text-white">
-                {hello.data ? hello.data.greeting : "Loading tRPC query..."}
+                {/* {hello.data ? hello.data.greeting : "Loading tRPC query..."} */}
               </p>
               <AuthShowcase />
             </div>
