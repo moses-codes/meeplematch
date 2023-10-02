@@ -1,4 +1,6 @@
 import React from 'react'
+import Burger from '../../../public/burger2.svg'
+import Image from 'next/image'
 
 const SearchResult = (props) => {
     const { title, id } = props
@@ -9,12 +11,16 @@ const SearchResult = (props) => {
     }
 
     return (
-        <li className="flex justify-between py-2" >
+        <li className="flex justify-between py-2" key={id} >
             {title}
             <button
                 onClick={handleClick}
-                className="btn-primary btn-xs"
-                id={id}>add</button>
+                className="btn-primary btn-xs rounded-md "
+                id={id}>
+
+                <Image className='text-white' src={Burger} height={25} width={25} alt='click here to see more' aria-label='Click to see more' />
+
+            </button>
         </li>
     )
 }
@@ -60,7 +66,7 @@ async function addGame(id: number, title: string) {
                 mechanics.push({ mechanicId: id, mechanicText: value! });
             });
 
-            console.log(playTime, minPlayers, maxPlayers, complexity, image)
+            console.log({ playTime: playTime, minPlayers: minPlayers, maxPlayers: maxPlayers, complexity: complexity, image: image })
             console.log(mechanics)
 
             //put all the info into this object & return it
