@@ -14,13 +14,8 @@ export const exampleRouter = createTRPCRouter({
         greeting: `Hello ${input.text}`,
       };
     }),
-  gugu: publicProcedure
-    .query(({ input }) => {
-      console.log('hehe')
-    }),
   getAll: publicProcedure.query(({ ctx }) => {
     let result = ctx.db.user.findMany()
-    console.log('the result is:', result)
     return result;
   }),
 

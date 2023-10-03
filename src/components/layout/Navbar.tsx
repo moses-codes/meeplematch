@@ -9,7 +9,7 @@ export default function Navbar() {
     return (
         <div className="navbar bg-base-100 flex px-24 py-5 items-center">
             <div className="flex-1 border-blue-500 border-2">
-                <Link href='/' className="btn btn-ghost normal-case text-xl">gamingTime</Link>
+                <Link href='/' className="btn btn-ghost normal-case text-xl">MeepleMatch</Link>
             </div>
             <div className="flex-1 border-red-500 border-2">
                 <ul className="menu menu-horizontal px-1 flex w-full justify-center">

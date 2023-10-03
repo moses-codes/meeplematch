@@ -1,54 +1,74 @@
-import React from 'react'
+import { React, useState } from 'react'
 import Burger from '../../../public/burger2.svg'
 import Image from 'next/image'
+
+// import 
+
+import { api } from "~/utils/api";
+
+interface GameInfo {
+    playTime: number;
+    minPlayers: number;
+    maxPlayers: number;
+    complexity: number;
+    image: string;
+}
 
 const SearchResult = (props) => {
     const { title, id } = props
 
-    function handleClick(e) {
+    const info = api.boardGames.addGame.useMutation()
+
+    async function handleClick(e) {
         // console.log(e.target.id)
-        addGame(e.target.id, title)
+        let boardGameInfo: {
+            playTime: number;
+            minPlayers: number;
+            maxPlayers: number;
+            complexity: number;
+            image: string;
+        } = await addGame(id, title)
+        // boardGameInfo = await addGame(id, title)
+        // setGameInfo(boardGameInfo)
+        info.mutate(boardGameInfo)
     }
 
     return (
-        <li className="flex justify-between py-2" key={id} >
+        <li className="flex justify-between py-2" >
             {title}
             <button
                 onClick={handleClick}
                 className="btn-primary btn-xs rounded-md "
                 id={id}>
 
-                <Image className='text-white' src={Burger} height={25} width={25} alt='click here to see more' aria-label='Click to see more' />
+                ADD
 
             </button>
         </li>
     )
 }
 
-async function addGame(id: number, title: string) {
+async function addGame(id: number, title: string): Promise<{
+    playTime: number;
+    minPlayers: number;
+    maxPlayers: number;
+    complexity: number;
+    image: string;
+}> {
 
     const baseURLInfo = "https://boardgamegeek.com/xmlapi2/thing?id="
+
+    // console.log('id equals', id)
+
+    let info
 
     const gameInformation = await fetch(baseURLInfo + id + '&stats=1')
         .then(response => response.text())
         .then(data => {
-            console.log(id, data)
             let xmlDocument = new DOMParser().parseFromString(data, "text/xml")
             let boardGameResults = xmlDocument.querySelectorAll("item");
 
             //pass in title & id from the parent component
-
-            // let boardGameInfo: {
-            //     playTime: number,
-            //     minPlayers: number,
-            //     maxPlayers: number,
-            //     id: number,
-            //     complexity: number,
-            //     image: string,
-            //     title: string,
-            // } = {
-            //     playTime: 0,
-            // }
 
             let playTime: number = Number(xmlDocument.querySelector('playingtime')?.getAttribute('value'))
             let minPlayers: number = Number(xmlDocument.querySelector('minplayers')?.getAttribute('value'))
@@ -66,12 +86,21 @@ async function addGame(id: number, title: string) {
                 mechanics.push({ mechanicId: id, mechanicText: value! });
             });
 
-            console.log({ playTime: playTime, minPlayers: minPlayers, maxPlayers: maxPlayers, complexity: complexity, image: image })
-            console.log(mechanics)
+            info = {
+                playTime: playTime,
+                minPlayers: minPlayers,
+                maxPlayers: maxPlayers,
+                complexity: complexity,
+                image: image
+            }
+            console.log(mechanics, info)
 
             //put all the info into this object & return it
 
+
         })
+
+    return info
 }
 
 // model Game {
