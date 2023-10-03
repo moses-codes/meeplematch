@@ -17,20 +17,28 @@ interface GameInfo {
 const SearchResult = (props) => {
     const { title, id } = props
 
-    const info = api.boardGames.addGame.useMutation()
+    const bgInfo = api.boardGames.addGame.useMutation()
+    const bgMechanics = api.boardGames.addMechanics.useMutation()
 
     async function handleClick(e) {
         // console.log(e.target.id)
         let boardGameInfo: {
-            playTime: number;
-            minPlayers: number;
-            maxPlayers: number;
-            complexity: number;
-            image: string;
+            bgInfo: {
+                playTime: number;
+                minPlayers: number;
+                maxPlayers: number;
+                complexity: number;
+                image: string;
+            };
+            bgMechanics: {
+                mechanicId: number;
+                mechanicText: string;
+            }[]
         } = await addGame(id, title)
         // boardGameInfo = await addGame(id, title)
         // setGameInfo(boardGameInfo)
-        info.mutate(boardGameInfo)
+        bgInfo.mutate(boardGameInfo)
+        // bgMechanics.mutate()
     }
 
     return (
@@ -60,7 +68,23 @@ async function addGame(id: number, title: string): Promise<{
 
     // console.log('id equals', id)
 
-    let info
+    let bgInfo: {
+        playTime: number;
+        minPlayers: number;
+        maxPlayers: number;
+        complexity: number;
+        image: string;
+    } = {
+        playTime: 0,
+        minPlayers: 0,
+        maxPlayers: 0,
+        complexity: 0,
+        image: "",
+    };
+    let mechanics: {
+        mechanicText: string,
+        mechanicId: number
+    }[] = []
 
     const gameInformation = await fetch(baseURLInfo + id + '&stats=1')
         .then(response => response.text())
@@ -76,8 +100,6 @@ async function addGame(id: number, title: string): Promise<{
             let complexity: number = Number(xmlDocument.querySelector('averageweight')?.getAttribute('value'))
             let image: string = xmlDocument.querySelector('thumbnail')?.textContent!;
 
-            let mechanics: { mechanicText: string, mechanicId: number }[] = []
-
             let links = xmlDocument.querySelectorAll('link[type="boardgamemechanic"]')
 
             links.forEach((link) => {
@@ -86,21 +108,22 @@ async function addGame(id: number, title: string): Promise<{
                 mechanics.push({ mechanicId: id, mechanicText: value! });
             });
 
-            info = {
+            bgInfo = {
                 playTime: playTime,
                 minPlayers: minPlayers,
                 maxPlayers: maxPlayers,
                 complexity: complexity,
                 image: image
             }
-            console.log(mechanics, info)
+
+            console.log(mechanics, bgInfo)
 
             //put all the info into this object & return it
 
 
         })
 
-    return info
+    return { bgInfo: bgInfo, bgMechanics: mechanics }
 }
 
 // model Game {

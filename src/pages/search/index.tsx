@@ -36,7 +36,6 @@ export default function Search() {
         e.preventDefault()
         let results: SearchResult[] = await boardGameSearch(searchInput)
         setSearchResults(results)
-        console.log(results)
     }
 
     let searchResultList = (

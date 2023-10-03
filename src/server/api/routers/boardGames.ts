@@ -6,19 +6,41 @@ import {
     publicProcedure,
 } from "~/server/api/trpc";
 
+const bgInfoSchema = z.object({
+    playTime: z.number(),
+    minPlayers: z.number(),
+    maxPlayers: z.number(),
+    complexity: z.number(),
+    image: z.string(),
+});
+
+const bgMechanicsSchema = z.array(
+    z.object({
+        mechanicId: z.number(),
+        mechanicText: z.string(),
+    })
+);
+
 export const boardGamesRouter = createTRPCRouter({
+
     addGame: publicProcedure
         .input(z.object({
-            playTime: z.number(),
-            minPlayers: z.number(),
-            maxPlayers: z.number(),
-            complexity: z.number(),
-            image: z.string(),
+            bgInfo: bgInfoSchema,
+            bgMechanics: bgMechanicsSchema,
         }))
         .mutation(({ input }) => {
             console.log(input)
             return {
-                greeting: `Hello ${input.playTime}`,
+                greeting: `Hello ${input.bgInfo}`,
             };
         }),
+
+    // addMechanics: publicProcedure
+    //     .input(z.array(z.object({ mechanicId: z.number(), mechanicText: z.string() })))
+    //     .mutation(({ input }) => {
+    //         console.log(input)
+    //         return {
+    //             greeting: input,
+    //         }
+    //     })
 });
