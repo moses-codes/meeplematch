@@ -42,7 +42,7 @@ export default function Search() {
         <ul>
             {searchResults.map((result) => {
                 return <SearchResult title={result.title} id={result.id}
-                    key={result.key}
+                    key={result.id}
                 />
             })}
         </ul>
@@ -145,5 +145,6 @@ async function boardGameSearch(input: String) {
             })
         }
     }
+
     return boardGames
 }

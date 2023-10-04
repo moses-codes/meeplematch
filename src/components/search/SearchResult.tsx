@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { signIn, signOut, useSession } from "next-auth/react";
 import Burger from '../../../public/burger2.svg'
 import Image from 'next/image'
 
@@ -14,7 +15,7 @@ interface GameInfo {
     image: string;
 }
 
-const SearchResult = (props) => {
+const SearchResult = (props: { title: string; id: number; }) => {
     const { title, id } = props
 
     const bgInfo = api.boardGames.addGame.useMutation()
@@ -29,12 +30,13 @@ const SearchResult = (props) => {
                 maxPlayers: number;
                 complexity: number;
                 image: string;
+                gameId: number
             };
             bgMechanics: {
                 mechanicId: number;
                 mechanicText: string;
             }[]
-        } = await addGame(id, title)
+        } = await addGame(id, title)!
         // boardGameInfo = await addGame(id, title)
         // setGameInfo(boardGameInfo)
         bgInfo.mutate(boardGameInfo)
@@ -62,6 +64,7 @@ async function addGame(id: number, title: string): Promise<{
     maxPlayers: number;
     complexity: number;
     image: string;
+    gameId: number;
 }> {
 
     const baseURLInfo = "https://boardgamegeek.com/xmlapi2/thing?id="
@@ -74,6 +77,7 @@ async function addGame(id: number, title: string): Promise<{
         maxPlayers: number;
         complexity: number;
         image: string;
+        gameId: number;
     } = {
         playTime: 0,
         minPlayers: 0,
@@ -113,7 +117,8 @@ async function addGame(id: number, title: string): Promise<{
                 minPlayers: minPlayers,
                 maxPlayers: maxPlayers,
                 complexity: complexity,
-                image: image
+                image: image,
+                gameId: id,
             }
 
             console.log(mechanics, bgInfo)

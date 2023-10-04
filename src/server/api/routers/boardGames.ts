@@ -12,6 +12,7 @@ const bgInfoSchema = z.object({
     maxPlayers: z.number(),
     complexity: z.number(),
     image: z.string(),
+    gameId: z.number(),
 });
 
 const bgMechanicsSchema = z.array(
@@ -28,11 +29,23 @@ export const boardGamesRouter = createTRPCRouter({
             bgInfo: bgInfoSchema,
             bgMechanics: bgMechanicsSchema,
         }))
-        .mutation(({ input }) => {
-            console.log(input)
-            return {
-                greeting: `Hello ${input.bgInfo}`,
-            };
+        .mutation(async ({ ctx, input }) => {
+            //console.log(input)
+            // input.bgMechanics.forEach(mechanic => {
+            //     mechanic.mechanicId = mechanic.mechanicId
+            //     const addMechanics = ctx.db.mechanic.create({
+            //         data: {
+            //             id: mechanic.mechanicId,
+            //             mechanicText: mechanic.mechanicText,
+            //             games: {
+            //                 create: {
+
+            //                 }
+            //             }
+            //         }
+            //     })
+            // })
+            console.log('mee when i', input.bgMechanics, input.bgInfo)
         }),
 
     // addMechanics: publicProcedure

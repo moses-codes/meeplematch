@@ -71,7 +71,7 @@ model VerificationToken {
 }
 
 model Game {
-    id           String        @id
+    id           String        @id @unique
     name         String
     image        String?
     playTime     Int
@@ -85,7 +85,7 @@ model Game {
 
 //many mechanics bay be tied to many games.
 model Mechanic {
-    id           String @id
+    id           Int    @id @unique
     mechanicText String
     games        Game[]
 }
@@ -93,12 +93,15 @@ model Mechanic {
 //one session to one game
 //one game to many sessions
 model GameSession {
-    id          String  @id
+    id          String  @id @unique
     comment     String?
     whoWasThere String?
     duration    Int?
-    gameId      String  @unique
-    userId      String  @unique
+    gameId      String
+    userId      String
     game        Game    @relation(fields: [gameId], references: [id])
     user        User    @relation(fields: [userId], references: [id])
+
+    @@index([userId])
+    @@index([gameId])
 }
