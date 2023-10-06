@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+//import the prisma client from prisma. 
 
 import { env } from "~/env.mjs";
 
@@ -12,5 +13,7 @@ export const db =
     log:
       env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   });
+//error handling
 
 if (env.NODE_ENV !== "production") globalForPrisma.prisma = db;
+//set the prisma client to 'db' in trpc routers && auth.

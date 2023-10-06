@@ -70,6 +70,8 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  * errors on the backend.
  */
 
+//The superjson format allows us to use things like Date, Set, and Map
+
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {

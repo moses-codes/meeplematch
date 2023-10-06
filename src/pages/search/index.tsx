@@ -119,7 +119,9 @@ async function boardGameSearch(input: String) {
 
     // let idSetter = 0
 
-    const searchResults = await fetch(baseURLSearch + input)
+
+
+    const searchResults = await fetch(baseURLSearch + input + '&type=boardgame')
         .then(response => response.text())
         .then(data => {
             // console.log(data)
