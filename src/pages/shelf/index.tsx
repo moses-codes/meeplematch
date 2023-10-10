@@ -3,9 +3,23 @@ import Head from "next/head";
 import Link from "next/link";
 import Layout from "~/components/layout/Layout";
 
+import { useState } from "react"
+
 import { api } from "~/utils/api";
+import { type } from "os";
 
 export default function Home() {
+
+    const [boardGames, setBoardGames] = useState([])
+
+    const { data: userGames } = api.boardGames.getUserGames.useQuery(undefined, {
+        onSuccess: (data) => {
+            setBoardGames(data)
+        },
+    });
+
+
+    console.log('the users games are: ', { boardGames })
 
     return (
         <>
@@ -17,7 +31,15 @@ export default function Home() {
                 </Head>
                 <main className=" flex min-h-screen flex-col items-center justify-center bg-slate-300">
                     <h1>Library</h1>
-                    <AuthShowcase></AuthShowcase>
+                    <div>
+                        <ul>
+                            {boardGames && boardGames.map(game => {
+                                return <li>
+                                    {game.title}
+                                </li>
+                            })}
+                        </ul>
+                    </div>
                 </main>
             </Layout>
         </>

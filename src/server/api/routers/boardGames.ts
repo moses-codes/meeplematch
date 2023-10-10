@@ -1,3 +1,4 @@
+import { contextProps } from "@trpc/react-query/shared";
 import { z } from "zod";
 
 import {
@@ -25,6 +26,21 @@ const bgMechanicsSchema = z.array(
 
 export const boardGamesRouter = createTRPCRouter({
 
+    getUserGames: protectedProcedure.query(async ({ ctx }) => {
+        const result = await ctx.db.game.findMany({
+            where: {
+                user: {
+                    some: {
+                        id: ctx.session.user.id,
+                    }
+                }
+            }
+        })
+
+        return result
+
+    }),
+
     addGame: protectedProcedure
         .input(z.object({
             bgInfo: bgInfoSchema,
@@ -34,13 +50,6 @@ export const boardGamesRouter = createTRPCRouter({
 
             const { bgInfo, bgMechanics } = input
 
-            // data: {
-            //     email: 'vlad@prisma.io',
-            //     posts: {
-            //       connect: [{ id: 8 }, { id: 9 }, { id: 10 }],
-            //     },
-            //   },
-
             //needs an array of mechanics with each id required.
             const bgMechanicsIds = bgMechanics.map(mechanic => {
                 return {
@@ -48,7 +57,7 @@ export const boardGamesRouter = createTRPCRouter({
                 }
             })
 
-            console.log(bgMechanicsIds)
+            console.log('\n\n\n\n\n/*************the current user is', ctx.session.user.id, '*************/\n\n\n\n\n')
 
             //add the mechanics into DB first
             const addMechanics = await ctx.db.mechanic.createMany({
@@ -68,12 +77,11 @@ export const boardGamesRouter = createTRPCRouter({
                     mechanics: {
                         connect: [...bgMechanicsIds]
                     },
-
-                    // posts: {
-                    //     createMany: {
-                    //       data: [{ title: 'My first post' }, { title: 'My second post' }],
-                    //     },
-                    //   },
+                    user: {
+                        connect: {
+                            id: ctx.session.user.id
+                        }
+                    }
                 },
             })
 
@@ -94,5 +102,37 @@ export const boardGamesRouter = createTRPCRouter({
 
             console.log(bgInfo)
         }),
+
+    deleteGame: protectedProcedure
+        .input(z.object({
+            bgInfo: bgInfoSchema,
+        }))
+        .mutation(async ({ ctx, input }) => {
+
+            const disconnectGame = ctx.db.user.update({
+
+                where: {
+                    id: ctx.session.user.id
+                },
+                data: {
+                    games: {
+                        disconnect: {
+                            id: input.bgInfo.id
+                        }
+                    }
+                }
+
+            })
+
+            // where: {
+            //     id: 16,
+            //   },
+            //   data: {
+            //     posts: {
+            //       disconnect: [{ id: 12 }, { id: 19 }],
+            //     },
+            //   },
+        })
+
 
 });
