@@ -1,5 +1,5 @@
 import { contextProps } from "@trpc/react-query/shared";
-import { z } from "zod";
+import { string, z } from "zod";
 
 import {
     createTRPCRouter,
@@ -105,24 +105,28 @@ export const boardGamesRouter = createTRPCRouter({
 
     deleteGame: protectedProcedure
         .input(z.object({
-            bgInfo: bgInfoSchema,
+            id: z.number(),
         }))
         .mutation(async ({ ctx, input }) => {
 
-            const disconnectGame = ctx.db.user.update({
+            console.log('\n\n\n***//', input.id)
+
+            const disconnectGame = ctx.db.game.update({
 
                 where: {
-                    id: ctx.session.user.id
+                    id: input.id,
                 },
                 data: {
-                    games: {
-                        disconnect: {
-                            id: input.bgInfo.id
-                        }
+                    user: {
+                        disconnect: [{
+                            id: ctx.session.user.id,
+                        }],
                     }
                 }
 
             })
+
+            return disconnectGame
 
             // where: {
             //     id: 16,
