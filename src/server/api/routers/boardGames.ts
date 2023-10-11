@@ -48,6 +48,29 @@ export const boardGamesRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
 
+            const existingGame = await ctx.db.game.findUnique({
+                where: {
+                    id: input.bgInfo.id,
+                }
+            })
+
+            if (existingGame) {
+                const connectUserToGame = await ctx.db.game.update({
+                    where: {
+                        id: existingGame.id,
+                    },
+                    data: {
+                        user: {
+                            connect: {
+                                id: ctx.session.user.id,
+                            }
+                        }
+                    }
+                })
+
+                return connectUserToGame
+            };
+
             const { bgInfo, bgMechanics } = input
 
             //needs an array of mechanics with each id required.
@@ -103,7 +126,7 @@ export const boardGamesRouter = createTRPCRouter({
             console.log(bgInfo)
         }),
 
-    deleteGame: protectedProcedure
+    removeGameFromShelf: protectedProcedure
         .input(z.object({
             id: z.number(),
         }))

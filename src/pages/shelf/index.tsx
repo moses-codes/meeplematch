@@ -12,7 +12,7 @@ export default function Home() {
 
     const [boardGames, setBoardGames] = useState([])
 
-    const deleteGame = api.boardGames.deleteGame.useMutation();
+    const removeGame = api.boardGames.removeGameFromShelf.useMutation();
 
     const { data: userGames } = api.boardGames.getUserGames.useQuery(undefined, {
         onSuccess: (data) => {
@@ -22,7 +22,7 @@ export default function Home() {
 
     async function handleClick(e) {
         let deletedGameId = Number(e.target.value)
-        const result = await deleteGame.mutate({ id: deletedGameId })
+        const result = await removeGame.mutate({ id: deletedGameId })
     }
 
     console.log('the users games are: ', { boardGames })
