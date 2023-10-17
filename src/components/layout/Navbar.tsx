@@ -14,6 +14,7 @@ export default function Navbar() {
             <div className="flex-1 border-red-500 border-2">
                 <ul className="menu menu-horizontal px-1 flex w-full justify-center">
                     <li><Link href='/shelf'>My Shelf</Link></li>
+                    <li><Link href='/gameMatcher'>Matcher</Link></li>
                     <li><Link href='/search'>Add Game</Link></li>
                 </ul>
             </div>

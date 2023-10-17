@@ -29,12 +29,15 @@ export const boardGamesRouter = createTRPCRouter({
     getUserGames: protectedProcedure.query(async ({ ctx }) => {
         const result = await ctx.db.game.findMany({
             where: {
-                user: {
+                users: {
                     some: {
                         id: ctx.session.user.id,
                     }
                 }
-            }
+            },
+            include: {
+                mechanics: true,
+            },
         })
 
         return result
@@ -60,7 +63,7 @@ export const boardGamesRouter = createTRPCRouter({
                         id: existingGame.id,
                     },
                     data: {
-                        user: {
+                        users: {
                             connect: {
                                 id: ctx.session.user.id,
                             }
@@ -100,7 +103,7 @@ export const boardGamesRouter = createTRPCRouter({
                     mechanics: {
                         connect: [...bgMechanicsIds]
                     },
-                    user: {
+                    users: {
                         connect: {
                             id: ctx.session.user.id
                         }
@@ -140,7 +143,7 @@ export const boardGamesRouter = createTRPCRouter({
                     id: input.id,
                 },
                 data: {
-                    user: {
+                    users: {
                         disconnect: [{
                             id: ctx.session.user.id,
                         }],
