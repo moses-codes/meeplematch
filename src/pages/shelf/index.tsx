@@ -56,8 +56,12 @@ export default function Home() {
     });
 
     async function handleClick(e) {
-        let deletedGameId = Number(e.target.value)
+        let deletedGameId: number = Number(e.target.value)
+
+        console.log(boardGames)
+
         const result = await removeGame.mutate({ id: deletedGameId })
+
     }
 
     console.log('the users games are: ', { boardGames })
