@@ -19,7 +19,7 @@ export const exampleRouter = createTRPCRouter({
     return result;
   }),
 
-  getSecretMessage: protectedProcedure.query(() => {
+  getSecretMessage: protectedProcedure.query(({ ctx }) => {
     return "you can now see this secret massage!";
   }),
 });

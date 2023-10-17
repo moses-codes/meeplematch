@@ -57,11 +57,8 @@ export default function Home() {
 
     async function handleClick(e) {
         let deletedGameId: number = Number(e.target.value)
-
-        console.log(boardGames)
-
+        setBoardGames([...boardGames].filter(g => g.id !== deletedGameId))
         const result = await removeGame.mutate({ id: deletedGameId })
-
     }
 
     console.log('the users games are: ', { boardGames })
