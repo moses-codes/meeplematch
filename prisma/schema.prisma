@@ -50,18 +50,6 @@ model Session {
     @@index([userId])
 }
 
-model User {
-    id            String        @id @default(cuid())
-    name          String?
-    email         String?       @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    games         Game[]
-    gameSessions  GameSession[]
-}
-
 model VerificationToken {
     identifier String
     token      String   @unique
@@ -70,35 +58,88 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model Game {
-    id           String        @id
-    name         String
-    image        String?
-    playTime     Int
-    maxPlayers   Int
-    minPlayers   Int
-    complexity   Float
-    user         User[]
-    mechanics    Mechanic[]
-    gameSessions GameSession[]
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+    games         Game[]
+    // gameSessions  GameSession[]
 }
 
-//many mechanics bay be tied to many games.
+model Game {
+    id         Int        @id @unique
+    title      String
+    image      String?
+    playTime   Int
+    maxPlayers Int
+    minPlayers Int
+    complexity Float
+    users      User[]
+    mechanics  Mechanic[]
+    // gameSessions GameSession[]
+}
+
+//many mechanics may be tied to many games.
 model Mechanic {
-    id           String @id
+    id           Int    @id @unique @default(autoincrement())
     mechanicText String
     games        Game[]
 }
 
 //one session to one game
 //one game to many sessions
-model GameSession {
-    id          String  @id
-    comment     String?
-    whoWasThere String?
-    duration    Int?
-    gameId      String  @unique
-    userId      String  @unique
-    game        Game    @relation(fields: [gameId], references: [id])
-    user        User    @relation(fields: [userId], references: [id])
-}
+// model GameSession {
+//     id          String   @id @unique
+//     comment     String?
+//     whoWasThere String?
+//     duration    Int?
+//     gameId      String
+//     userId      String
+//     game        Game     @relation(fields: [gameId], references: [id])
+//     user        User     @relation(fields: [userId], references: [id])
+//     createdAt   DateTime @default(now())
+
+//     @@index([gameId])
+//     @@index([userId])
+// }
+
+// model User {
+//   id      Int      @id @default(autoincrement())
+//   email   String   @unique
+//   name    String?
+//   role    Role     @default(USER)
+//   posts   Post[]
+//   profile Profile?
+// }
+
+//the user references the Post schema. 
+
+// model Profile {
+//   id     Int    @id @default(autoincrement())
+//   bio    String
+//   user   User   @relation(fields: [userId], references: [id])
+//   userId Int    @unique
+// }
+
+//the Profile schema references the USer schema. 
+
+// model Post {
+//   id         Int        @id @default(autoincrement())
+//   createdAt  DateTime   @default(now())
+//   updatedAt  DateTime   @updatedAt
+//   title      String
+//   published  Boolean    @default(false)
+//   author     User       @relation(fields: [authorId], references: [id])
+//   authorId   Int
+//   categories Category[]
+// }
+
+// model Category {
+//   id    Int    @id @default(autoincrement())
+//   name  String
+//   posts Post[]
+// }

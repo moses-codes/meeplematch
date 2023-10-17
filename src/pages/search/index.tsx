@@ -42,7 +42,7 @@ export default function Search() {
         <ul>
             {searchResults.map((result) => {
                 return <SearchResult title={result.title} id={result.id}
-                    key={result.key}
+                    key={result.id}
                 />
             })}
         </ul>
@@ -119,7 +119,9 @@ async function boardGameSearch(input: String) {
 
     // let idSetter = 0
 
-    const searchResults = await fetch(baseURLSearch + input)
+
+
+    const searchResults = await fetch(baseURLSearch + input + '&type=boardgame')
         .then(response => response.text())
         .then(data => {
             // console.log(data)
@@ -145,5 +147,6 @@ async function boardGameSearch(input: String) {
             })
         }
     }
+
     return boardGames
 }

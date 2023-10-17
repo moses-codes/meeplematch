@@ -1,4 +1,5 @@
 import { React, useState } from 'react'
+import { signIn, signOut, useSession } from "next-auth/react";
 import Burger from '../../../public/burger2.svg'
 import Image from 'next/image'
 
@@ -12,13 +13,15 @@ interface GameInfo {
     maxPlayers: number;
     complexity: number;
     image: string;
+    title: string;
+    id: number;
 }
 
-const SearchResult = (props) => {
+const SearchResult = (props: { title: string; id: number; }) => {
     const { title, id } = props
 
     const bgInfo = api.boardGames.addGame.useMutation()
-    const bgMechanics = api.boardGames.addMechanics.useMutation()
+    // const bgMechanics = api.boardGames.addMechanics.useMutation()
 
     async function handleClick(e) {
         // console.log(e.target.id)
@@ -29,14 +32,15 @@ const SearchResult = (props) => {
                 maxPlayers: number;
                 complexity: number;
                 image: string;
+                id: number;
+                title: string;
             };
             bgMechanics: {
-                mechanicId: number;
+                id: number;
                 mechanicText: string;
             }[]
-        } = await addGame(id, title)
-        // boardGameInfo = await addGame(id, title)
-        // setGameInfo(boardGameInfo)
+        } = await addGame(id, title)!
+        // console.log(boardGameInfo)
         bgInfo.mutate(boardGameInfo)
         // bgMechanics.mutate()
     }
@@ -62,6 +66,7 @@ async function addGame(id: number, title: string): Promise<{
     maxPlayers: number;
     complexity: number;
     image: string;
+    id: number;
 }> {
 
     const baseURLInfo = "https://boardgamegeek.com/xmlapi2/thing?id="
@@ -74,16 +79,20 @@ async function addGame(id: number, title: string): Promise<{
         maxPlayers: number;
         complexity: number;
         image: string;
+        id: number;
+        title: string;
     } = {
         playTime: 0,
         minPlayers: 0,
         maxPlayers: 0,
         complexity: 0,
         image: "",
+        title: title,
+        id: id,
     };
     let mechanics: {
         mechanicText: string,
-        mechanicId: number
+        id: number
     }[] = []
 
     const gameInformation = await fetch(baseURLInfo + id + '&stats=1')
@@ -105,15 +114,17 @@ async function addGame(id: number, title: string): Promise<{
             links.forEach((link) => {
                 const id = Number(link.getAttribute('id'));
                 const value = link.getAttribute('value');
-                mechanics.push({ mechanicId: id, mechanicText: value! });
+                mechanics.push({ id: id, mechanicText: value! });
             });
 
             bgInfo = {
+                title: title,
                 playTime: playTime,
                 minPlayers: minPlayers,
                 maxPlayers: maxPlayers,
                 complexity: complexity,
-                image: image
+                image: image,
+                id: id,
             }
 
             console.log(mechanics, bgInfo)

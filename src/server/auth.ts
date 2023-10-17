@@ -6,9 +6,11 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
+//import all the necessary functions from next and next-auth, including Discord Provider
 
 import { env } from "~/env.mjs";
 import { db } from "~/server/db";
+//import the Prisma client exported by the db.ts file.
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -30,6 +32,7 @@ declare module "next-auth" {
   //   // role: UserRole;
   // }
 }
+//if you want to add stuff to next-auth's DefaultSession interface, you can do so here. 
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -63,6 +66,8 @@ export const authOptions: NextAuthOptions = {
      */
   ],
 };
+
+//set up the Discord Provider here. 
 
 /**
  * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
