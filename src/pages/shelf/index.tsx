@@ -72,10 +72,10 @@ export default function Home() {
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
                 <main className=" flex min-h-screen flex-col items-center bg-slate-300">
-                    <h1 className="text-5xl">Library</h1>
-                    <div>
-                        {boardGames.length &&
-                            <div className="dropdown dropdown-hover">
+                    <h1 className="text-5xl py-10">Library</h1>
+                    <div className="">
+                        {boardGames.length ?
+                            <div className="dropdown dropdown-hover ml-24">
                                 <label tabIndex={0} className="btn m-1">Sort By...</label>
                                 <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                     <li><a onClick={handleChangeSort} id="alphaAz">Alpha &#40;A-Z&#41;</a></li>
@@ -84,11 +84,12 @@ export default function Home() {
                                     <li><a onClick={handleChangeSort} id="complexityDesc">Complexity &#40;desc.&#41;</a></li>
                                 </ul>
                             </div>
+                            : <></>
                         }
-                        <ul className="flex flex-wrap justify-start w-screen my-5  container mx-auto">
+                        <ul className="flex flex-wrap justify-around w-screen my-5  container mx-auto ">
 
                             {boardGames && boardGames.map((game: BoardGame) => {
-                                return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center " key={game.id}>
+                                return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center mx-0" key={game.id}>
                                     <h2 className="text-2xl font-bold">{game.title}</h2>
                                     <p>Players: {game.minPlayers} - {game.maxPlayers}</p>
                                     <img className='inline-block mx-auto' src={game.image} alt={`Box art for ${game.title}`} />
@@ -115,29 +116,5 @@ export default function Home() {
                 </main>
             </Layout>
         </>
-    );
-}
-
-function AuthShowcase() {
-    const { data: sessionData } = useSession();
-    //use the useSession function from nextAuth
-    const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-        undefined, // no input
-        { enabled: sessionData?.user !== undefined }
-    );
-
-    return (
-        <div className="flex flex-col items-center justify-center gap-4">
-            <p className="text-center text-2xl text-white">
-                {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-                {secretMessage && <span> - {secretMessage}</span>}
-            </p>
-            <button
-                className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-                onClick={sessionData ? () => void signOut() : () => void signIn()}
-            >
-                {sessionData ? "Sign out" : "Sign in"}
-            </button>
-        </div>
     );
 }

@@ -76,7 +76,7 @@ function AuthShowcase() {
                             <img src={sessionData?.user.image} />
                         </div>
                     </div>}
-                {sessionData ? "Sign out" : "Sign in"}
+                {sessionData ? <p className="text-xs">Sign out</p> : <p className="text-xs">Sign in</p>}
             </button>
         </div >
     );
