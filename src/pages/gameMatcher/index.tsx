@@ -114,7 +114,7 @@ export default function GameMatcher() {
                     <link rel="icon" href="/3d-meeple-svgrepo-com.svg" />
                 </Head>
                 <main className=" flex min-h-screen flex-col items-center pt-12 bg-slate-300 pb-36">
-                    <h1>Let's find some games.</h1>
+                    <h1 className="text-2xl mb-2">MeepleMatch!</h1>
 
                     <form onSubmit={handleSubmit} className='flex flex-col'>
                         <label htmlFor="numPlayers">How many players are at the table?</label>
@@ -148,9 +148,9 @@ export default function GameMatcher() {
                         <button type="submit" className='btn-secondary'>MeepleMatch!</button>
                     </form>
 
-                    {filteredGames &&
+                    {filteredGames.length ?
 
-                        <div className="dropdown dropdown-hover">
+                        <div className="dropdown dropdown-hover mt-10">
                             <label tabIndex={0} className="btn m-1">Sort By...</label>
                             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                 <li><a onClick={handleChangeSort} id="alphaAz">Alpha &#40;A-Z&#41;</a></li>
@@ -159,7 +159,7 @@ export default function GameMatcher() {
                                 <li><a onClick={handleChangeSort} id="complexityDesc">Complexity &#40;desc.&#41;</a></li>
                             </ul>
                         </div>
-
+                        : <></>
                     }
 
                     <ul className="flex justify-center flex-wrap w-screen my-5">

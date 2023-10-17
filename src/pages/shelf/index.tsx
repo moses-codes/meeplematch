@@ -84,6 +84,8 @@ export default function Home() {
                                 </ul>
                             </div>
                         }
+
+
                         <ul className="flex flex-wrap justify-start w-screen my-5  container mx-auto">
 
                             {boardGames && boardGames.map((game: BoardGame) => {
