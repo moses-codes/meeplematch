@@ -19,7 +19,7 @@ export default function Navbar() {
                         <li><Link href='/search'>Add Game</Link></li>
                     </ul>
                 </div>
-                <a className="btn btn-ghost normal-case text-xl">MeepleMatch</a>
+                <a className="btn btn-ghost normal-case text-xl"><img className="h-10" src="/3d-meeple-svgrepo-com.svg" />MeepleMatch</a>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
