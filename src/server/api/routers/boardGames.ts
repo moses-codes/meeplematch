@@ -26,23 +26,24 @@ const bgMechanicsSchema = z.array(
 
 export const boardGamesRouter = createTRPCRouter({
 
-    getUserGames: protectedProcedure.query(async ({ ctx }) => {
-        const result = await ctx.db.game.findMany({
-            where: {
-                users: {
-                    some: {
-                        id: ctx.session.user.id,
+    getUserGames: protectedProcedure
+        .query(async ({ ctx }) => {
+            const result = await ctx.db.game.findMany({
+                where: {
+                    users: {
+                        some: {
+                            id: ctx.session.user.id,
+                        }
                     }
-                }
-            },
-            include: {
-                mechanics: true,
-            },
-        })
+                },
+                include: {
+                    mechanics: true,
+                },
+            })
 
-        return result
+            return result
 
-    }),
+        }),
 
     addGame: protectedProcedure
         .input(z.object({
@@ -153,15 +154,6 @@ export const boardGamesRouter = createTRPCRouter({
             })
 
             return disconnectGame
-
-            // where: {
-            //     id: 16,
-            //   },
-            //   data: {
-            //     posts: {
-            //       disconnect: [{ id: 12 }, { id: 19 }],
-            //     },
-            //   },
         })
 
 

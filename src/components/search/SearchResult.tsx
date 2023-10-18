@@ -1,6 +1,6 @@
 import { React, useState } from 'react'
 import { signIn, signOut, useSession } from "next-auth/react";
-import Burger from '../../../public/burger2.svg'
+// import Burger from '../../../public/burger2.svg'
 import Image from 'next/image'
 
 // import 
@@ -17,8 +17,10 @@ interface GameInfo {
     id: number;
 }
 
-const SearchResult = (props: { title: string; id: number; }) => {
-    const { title, id } = props
+const SearchResult = (props: { title: string; id: number; yearPublished: number; isInLibrary: boolean }) => {
+    const { title, id, yearPublished, isInLibrary } = props
+
+    console.log(title, isInLibrary)
 
     const bgInfo = api.boardGames.addGame.useMutation()
     // const bgMechanics = api.boardGames.addMechanics.useMutation()
@@ -42,18 +44,22 @@ const SearchResult = (props: { title: string; id: number; }) => {
         } = await addGame(id, title)!
         // console.log(boardGameInfo)
         bgInfo.mutate(boardGameInfo)
+        // isInLibrary = !isInLibrary
         // bgMechanics.mutate()
     }
 
     return (
         <li className="flex justify-between py-2" >
-            {title}
+            {`${title} (${yearPublished})`}
             <button
                 onClick={handleClick}
-                className="btn-primary btn-xs rounded-md "
-                id={id}>
+                className={`btn-primary btn-xs rounded-md 
+                ${isInLibrary && 'btn-disabled btn-neutral'}
+                `}
+                id={id}
+            >
 
-                ADD
+                {isInLibrary ? "IN LIBRARY" : "ADD"}
 
             </button>
         </li>

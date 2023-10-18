@@ -114,13 +114,13 @@ export default function GameMatcher() {
                     <link rel="icon" href="/3d-meeple-svgrepo-com.svg" />
                 </Head>
                 <main className=" flex min-h-screen flex-col items-center pt-12 bg-slate-300 pb-36">
-                    <h1>Let's find some games.</h1>
+                    <h1 className="text-3xl my-5">Game Matcher</h1>
 
                     <form onSubmit={handleSubmit} className='flex flex-col'>
-                        <label htmlFor="numPlayers">How many players are at the table?</label>
-                        <input type="number" id="numPlayers" name="numPlayers" value={formData.numPlayers} onChange={handleChange} />
+                        <label className='mt-5' htmlFor="numPlayers">How many players are at the table?</label>
+                        <input className='rounded-md pl-2' type="number" id="numPlayers" name="numPlayers" value={formData.numPlayers} onChange={handleChange} />
 
-                        <label htmlFor="complexity">What's your preferred maximum complexity?</label>
+                        <label className='mt-5' htmlFor="complexity">What's your preferred maximum complexity?</label>
                         <div className="flex items-center justify-between">
                             <div className="form-control">
                                 <label className="label cursor-pointer">
@@ -142,13 +142,13 @@ export default function GameMatcher() {
                             </div>
                         </div>
 
-                        <label htmlFor="playTime">What's your preferred play time &#40;in minutes&#41;?</label>
-                        <input type='number' id="playTime" name="playTime" value={formData.playTime} onChange={handleChange} />
+                        <label className='mt-5' htmlFor="playTime">What's your preferred play time &#40;in minutes&#41;?</label>
+                        <input className='rounded-md pl-2' type='number' id="playTime" name="playTime" value={formData.playTime} onChange={handleChange} />
 
-                        <button type="submit" className='btn-secondary'>MeepleMatch!</button>
+                        <button type="submit" className=' w-1/2  mx-auto btn btn-secondary mt-5'>MeepleMatch!</button>
                     </form>
 
-                    {filteredGames &&
+                    {filteredGames.length ?
 
                         <div className="dropdown dropdown-hover">
                             <label tabIndex={0} className="btn m-1">Sort By...</label>
@@ -159,7 +159,7 @@ export default function GameMatcher() {
                                 <li><a onClick={handleChangeSort} id="complexityDesc">Complexity &#40;desc.&#41;</a></li>
                             </ul>
                         </div>
-
+                        : <></>
                     }
 
                     <ul className="flex justify-center flex-wrap w-screen my-5">
