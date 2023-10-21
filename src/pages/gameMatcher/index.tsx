@@ -183,45 +183,21 @@ export default function GameMatcher() {
                     <ul className="flex justify-center flex-wrap w-screen my-5">
 
                         {filteredGames && filteredGames.map(game => {
-                            return isMindMGMT(game.id) ? <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center" key='1435145'>
-                                <h2 className="text-2xl font-bold truncate truncate-ellipsis">Dug's Donut Magnate</h2>
-                                <p>2 Players</p>
-                                <img className='inline-block mx-auto mb-5' src='https://i.ibb.co/9Y3D4mG/dug.png' alt={`Box art for Dug's Donut Magnate`} />
-                                <p>Play time: 10 min</p>
-                                <p>Complexity: 5 / 5</p>
+                            return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center" key={game.id}>
+                                <h2 className="text-2xl font-bold truncate truncate-ellipsis">{game.title}</h2>
+                                <p>Players: {game.minPlayers} - {game.maxPlayers}</p>
+                                <img className='inline-block mx-auto mb-5' src={game.image} alt={`Box art for ${game.title}`} />
+                                <p>Play time: {game.playTime} min</p>
+                                <p>Complexity: {(game.complexity).toPrecision(3)} / 5</p>
                                 <details className="dropdown mb-5">
                                     <summary className="m-1 btn">Mechanics</summary>
                                     <ul className="p-2 shadow menu dropdown-content z-[1] rounded-box w-64 mx-12 bg-blue-200">
-                                        <li>Donut management</li>
-                                        <li>Worker Placement</li>
-                                        <li>Agility</li>
-                                        <li>Real-Time</li>
-                                        <li>Traitor Game</li>
-                                        <li>Role Playing</li>
-                                        <li>Kill steal</li>
-                                        <li>Acting</li>
-                                        <li>End Game Bonus</li>
+                                        {game.mechanics.map((m: Mechanic) => {
+                                            return <li key={m.id}>{m.mechanicText}</li>
+                                        })}
                                     </ul>
                                 </details>
                             </li>
-
-                                :
-
-                                <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center" key={game.id}>
-                                    <h2 className="text-2xl font-bold truncate truncate-ellipsis">{game.title}</h2>
-                                    <p>Players: {game.minPlayers} - {game.maxPlayers}</p>
-                                    <img className='inline-block mx-auto mb-5' src={game.image} alt={`Box art for ${game.title}`} />
-                                    <p>Play time: {game.playTime} min</p>
-                                    <p>Complexity: {(game.complexity).toPrecision(3)} / 5</p>
-                                    <details className="dropdown mb-5">
-                                        <summary className="m-1 btn">Mechanics</summary>
-                                        <ul className="p-2 shadow menu dropdown-content z-[1] rounded-box w-64 mx-12 bg-blue-200">
-                                            {game.mechanics.map((m: Mechanic) => {
-                                                return <li key={m.id}>{m.mechanicText}</li>
-                                            })}
-                                        </ul>
-                                    </details>
-                                </li>
                         })}
 
                     </ul>
