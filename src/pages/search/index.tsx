@@ -1,37 +1,42 @@
+import { Mechanic } from "@prisma/client";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 // import Link from "next/link";
 import React, { useState } from "react";
+import { number } from "zod";
 import Layout from "~/components/layout/Layout";
 
 import SearchResult from "~/components/search/SearchResult";
 
 
+
+
 import { api } from "~/utils/api";
 
-type FormProps = {
-    type: string
-}
+// type FormProps = {
+//     type: string
+// }
 
 interface BoardGame {
     complexity: number;
     id: number;
-    image: string;
+    image: string | null;
     maxPlayers: number;
     minPlayers: number;
     playTime: number;
     title: string;
-    mechanics: [];
+    mechanics: { id: number; mechanicText: string }[];
 }
 
 export default function Search() {
 
     const [boardGames, setBoardGames] = useState<BoardGame[]>([])
 
-    const { data: userGames } = api.boardGames.getUserGames.useQuery(undefined, {
+    const getUserGames = api.boardGames.getUserGames.useQuery(undefined, {
         onSuccess: (data) => {
             setBoardGames(data)
         },
+
     });
 
     interface SearchResult {
@@ -62,6 +67,7 @@ export default function Search() {
             })}
         </ul>
     )
+
 
     return (
         <>
@@ -144,3 +150,4 @@ async function boardGameSearch(input: String) {
 
     return boardGames
 }
+

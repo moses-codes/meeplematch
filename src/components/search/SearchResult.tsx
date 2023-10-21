@@ -1,7 +1,12 @@
-import { React, useState } from 'react'
+import { ReactEventHandler, useState } from 'react'
 import { signIn, signOut, useSession } from "next-auth/react";
 // import Burger from '../../../public/burger2.svg'
 import Image from 'next/image'
+
+import { getHTTPStatusCodeFromError } from '@trpc/server/http';
+
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // import 
 
@@ -16,16 +21,44 @@ interface GameInfo {
     title: string;
     id: number;
 }
+interface BoardGame {
+    complexity: number;
+    id: number;
+    image: string | null;
+    maxPlayers: number;
+    minPlayers: number;
+    playTime: number;
+    title: string;
+    mechanics: { id: number; mechanicText: string }[];
+}
 
 const SearchResult = (props: { title: string; id: number; yearPublished: number; isInLibrary: boolean }) => {
+
     const { title, id, yearPublished, isInLibrary } = props
 
-    console.log(title, isInLibrary)
+    const [showInLibrary, setShowInLibrary] = useState<boolean>(isInLibrary)
 
-    const bgInfo = api.boardGames.addGame.useMutation()
+    // console.log(title, isInLibrary)
+
+    const bgInfo = api.boardGames.addGame.useMutation(({
+        onSuccess: async (e) => {
+            const notifyAdd = () => {
+                toast.success(`${e.title} has been added to your library.`, {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+            }
+            notifyAdd()
+            setShowInLibrary(!showInLibrary)
+        },
+        onError: (e) => {
+            toast.error('Error')
+            console.log(getHTTPStatusCodeFromError(e))
+        },
+    }))
+
     // const bgMechanics = api.boardGames.addMechanics.useMutation()
 
-    async function handleClick(e) {
+    async function handleClick(e: ReactEventHandler) {
         // console.log(e.target.id)
         let boardGameInfo: {
             bgInfo: {
@@ -54,12 +87,12 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
             <button
                 onClick={handleClick}
                 className={`btn-primary btn-xs rounded-md 
-                ${isInLibrary && 'btn-disabled btn-neutral'}
+                ${showInLibrary && 'btn-disabled btn-neutral opacity-75'}
                 `}
                 id={id}
             >
 
-                {isInLibrary ? "IN LIBRARY" : "ADD"}
+                {showInLibrary ? "IN LIBRARY" : "ADD"}
 
             </button>
         </li>
@@ -142,25 +175,5 @@ async function addGame(id: number, title: string): Promise<{
 
     return { bgInfo: bgInfo, bgMechanics: mechanics }
 }
-
-// model Game {
-//     id           String        @id
-//     name         String
-//     image        String?
-//     playTime     Int
-//     maxPlayers   Int
-//     minPlayers   Int
-//     complexity   Float
-//     user         User[]
-//     mechanics    Mechanic[]
-//     gameSessions GameSession[]
-// }
-
-// //many mechanics bay be tied to many games.
-// model Mechanic {
-//     id           String @id
-//     mechanicText String
-//     games        Game[]
-// }
 
 export default SearchResult

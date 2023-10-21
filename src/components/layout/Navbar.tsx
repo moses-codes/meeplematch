@@ -19,7 +19,7 @@ export default function Navbar() {
                         <li><Link href='/search'>Add Game</Link></li>
                     </ul>
                 </div>
-                <a className="btn btn-ghost normal-case text-xl"><img className="h-10" src="/3d-meeple-svgrepo-com.svg" />MeepleMatch</a>
+                <Link href='/shelf'><div className="btn btn-ghost normal-case text-sm lg:text-xl"><img className="h-4 lg:h-10" src="/3d-meeple-svgrepo-com.svg" />MeepleMatch</div></Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
@@ -32,19 +32,6 @@ export default function Navbar() {
                 <AuthShowcase />
             </div>
         </div>
-        // <div className="navbar bg-base-100 flex px-24 py-5 items-center">
-        //     <div className="flex-1 border-blue-500 border-2">
-        //         <Link href='/' className="btn btn-ghost normal-case text-xl">MeepleMatch</Link>
-        //     </div>
-        //     <div className="flex-1 border-red-500 border-2">
-        //         <ul className="menu menu-horizontal px-1 flex w-full justify-center">
-        //             <li><Link href='/shelf'>My Shelf</Link></li>
-        //             <li><Link href='/gameMatcher'>Matcher</Link></li>
-        //             <li><Link href='/search'>Add Game</Link></li>
-        //         </ul>
-        //     </div>
-        //     <AuthShowcase />
-        // </div>
     )
 }
 
@@ -56,15 +43,8 @@ function AuthShowcase() {
         { enabled: sessionData?.user !== undefined }
     );
 
-    console.log(sessionData)
-
     return (
         <div className="flex items-center justify-center w-1/2" >
-            {/* < p className="text-center text-sm text-black bg-slate-400" >
-                {sessionData && <span>Logged in as {sessionData.user?.name}</span>
-                }
-                {secretMessage && <span> - {secretMessage}</span>}
-            </p > */}
 
             <button
                 className="flex justify-between items-center rounded-full bg-slate-200 px-4 py-3 font-semibold text-black no-underline transition hover:bg-slate-400"

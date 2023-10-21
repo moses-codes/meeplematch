@@ -112,22 +112,8 @@ export const boardGamesRouter = createTRPCRouter({
                 },
             })
 
-            // model Game {
-            //     id         String     @id @unique
-            //     title      String
-            //     image      String?
-            //     playTime   Int
-            //     maxPlayers Int
-            //     minPlayers Int
-            //     complexity Float
-            //     user       User[]
-            //     mechanics  Mechanic[]
-            //     // gameSessions GameSession[]
-            // }
 
-            //connect the mechanics
-
-            console.log(bgInfo)
+            return bgInfo
         }),
 
     removeGameFromShelf: protectedProcedure
