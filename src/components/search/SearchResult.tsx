@@ -32,9 +32,9 @@ interface BoardGame {
     mechanics: { id: number; mechanicText: string }[];
 }
 
-const SearchResult = (props: { title: string; id: number; yearPublished: number; isInLibrary: boolean }) => {
+const SearchResult = (props: { title: string; id: number; yearPublished: number; isInLibrary: boolean, updateLibrary: (newGame: { id: number }) => void; }) => {
 
-    const { title, id, yearPublished, isInLibrary } = props
+    const { title, id, yearPublished, isInLibrary, updateLibrary } = props
 
     const [showInLibrary, setShowInLibrary] = useState<boolean>(isInLibrary)
 
@@ -49,6 +49,7 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
             }
             notifyAdd()
             setShowInLibrary(!showInLibrary)
+            updateLibrary({ id: e.id })
         },
         onError: (e) => {
             toast.error('Error')

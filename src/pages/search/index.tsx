@@ -30,11 +30,12 @@ interface BoardGame {
 
 export default function Search() {
 
-    const [boardGames, setBoardGames] = useState<BoardGame[]>([])
+    const [boardGames, setBoardGames] = useState<{ id: number }[]>([])
 
-    const getUserGames = api.boardGames.getUserGames.useQuery(undefined, {
+    const getUserGames = api.boardGames.getUserGameIds.useQuery(undefined, {
         onSuccess: (data) => {
             setBoardGames(data)
+            console.log(data)
         },
 
     });
@@ -55,6 +56,10 @@ export default function Search() {
         setSearchResults(results)
     }
 
+    function updateLibrary(newGame: { id: number }) {
+        setBoardGames([...boardGames, newGame])
+    }
+
     let searchResultList = (
         <ul>
             {searchResults.map((result) => {
@@ -62,7 +67,8 @@ export default function Search() {
                     id={result.id}
                     key={result.id}
                     yearPublished={result.yearPublished}
-                    isInLibrary={boardGames.find(el => el.id === result.id) ? true : false}
+                    isInLibrary={boardGames.find(g => g.id === result.id) ? true : false}
+                    updateLibrary={updateLibrary}
                 />
             })}
         </ul>
