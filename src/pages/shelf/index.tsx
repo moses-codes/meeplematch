@@ -3,6 +3,9 @@ import Head from "next/head";
 import Link from "next/link";
 import Layout from "~/components/layout/Layout";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { useState } from "react"
 
 import { api } from "~/utils/api";
@@ -28,7 +31,19 @@ export default function Home() {
 
     const [boardGames, setBoardGames] = useState<BoardGame[]>([])
 
-    const removeGame = api.boardGames.removeGameFromShelf.useMutation();
+    const removeGame = api.boardGames.removeGameFromShelf.useMutation({
+        onSuccess: (removedGame) => {
+            console.log(removedGame.title, ' has been removed from your shelf.')
+            setBoardGames([...boardGames].filter(g => g.id !== removedGame.id))
+            const notifyRemoved = () => {
+                toast.info(`${removedGame.title} has been removed from your shelf.`, {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+            }
+            //toast notification
+            notifyRemoved()
+        }
+    });
 
     const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -57,11 +72,12 @@ export default function Home() {
 
     async function handleClick(e) {
         let deletedGameId: number = Number(e.target.value)
-        setBoardGames([...boardGames].filter(g => g.id !== deletedGameId))
         const result = await removeGame.mutate({ id: deletedGameId })
     }
 
     console.log('the users games are: ', { boardGames })
+
+
 
     return (
         <>
@@ -86,18 +102,24 @@ export default function Home() {
                             </div>
                             : <></>
                         }
+
+
                         <ul className="flex flex-wrap justify-around w-screen my-5  container mx-auto ">
 
                             {boardGames && boardGames.map((game: BoardGame) => {
                                 return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center  mx-2" key={game.id}>
-                                    <h2 className="text-2xl font-bold">{game.title}</h2>
-                                    <p>Players: {game.minPlayers} - {game.maxPlayers}</p>
-                                    <img className='inline-block mx-auto' src={game.image} alt={`Box art for ${game.title}`} />
+                                    <h2 className="text-2xl font-bold truncate truncate-ellipsis mb-4">{game.title}</h2>
+
+                                    <img className='inline-block mx-auto mb-4 h-32 rounded-md' src={game.image} alt={`Box art for ${game.title}`} />
+                                    {game.minPlayers === game.maxPlayers ?
+                                        game.minPlayers === 1 ? <p>1 player</p> : <p>{game.maxPlayers} players</p>
+                                        :
+                                        <p>Players: {game.minPlayers} - {game.maxPlayers}</p>}
                                     <p>Play time: {game.playTime} min</p>
                                     <p>Complexity: {(game.complexity).toPrecision(3)} / 5</p>
                                     <details className="dropdown mb-10 mt-5">
                                         <summary className="m-1 btn">Mechanics</summary>
-                                        <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-64 mx-12">
+                                        <ul className="p-2 shadow menu dropdown-content z-[1] rounded-box w-64 mx-12 bg-blue-200">
                                             {game.mechanics.map((m: Mechanic) => {
                                                 return <li key={m.id}>{m.mechanicText}</li>
                                             })}

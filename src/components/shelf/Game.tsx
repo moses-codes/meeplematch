@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactEventHandler } from 'react'
 
 import { api } from "~/utils/api";
 

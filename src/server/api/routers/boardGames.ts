@@ -44,6 +44,24 @@ export const boardGamesRouter = createTRPCRouter({
             return result
 
         }),
+    getUserGameIds: protectedProcedure
+        .query(async ({ ctx }) => {
+            const result = await ctx.db.game.findMany({
+                where: {
+                    users: {
+                        some: {
+                            id: ctx.session.user.id,
+                        }
+                    }
+                },
+                select: {
+                    id: true,
+                },
+            })
+
+            return result
+
+        }),
 
     addGame: protectedProcedure
         .input(z.object({
@@ -112,22 +130,8 @@ export const boardGamesRouter = createTRPCRouter({
                 },
             })
 
-            // model Game {
-            //     id         String     @id @unique
-            //     title      String
-            //     image      String?
-            //     playTime   Int
-            //     maxPlayers Int
-            //     minPlayers Int
-            //     complexity Float
-            //     user       User[]
-            //     mechanics  Mechanic[]
-            //     // gameSessions GameSession[]
-            // }
 
-            //connect the mechanics
-
-            console.log(bgInfo)
+            return addGame
         }),
 
     removeGameFromShelf: protectedProcedure
@@ -138,7 +142,7 @@ export const boardGamesRouter = createTRPCRouter({
 
             console.log('\n\n\n***//', input.id)
 
-            const disconnectGame = ctx.db.game.update({
+            const disconnectGame = await ctx.db.game.update({
 
                 where: {
                     id: input.id,
@@ -153,6 +157,7 @@ export const boardGamesRouter = createTRPCRouter({
 
             })
 
+            console.log(disconnectGame)
             return disconnectGame
         })
 

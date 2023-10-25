@@ -4,8 +4,11 @@ import Head from "next/head";
 import React, { useState } from "react";
 import Layout from "~/components/layout/Layout";
 
+import dug from "../../../public/dug.png"
+
 import SearchResult from "~/components/search/SearchResult";
 
+import Image from "next/image";
 
 import { api } from "~/utils/api";
 
@@ -18,12 +21,12 @@ interface FormData {
 interface BoardGame {
     complexity: number;
     id: number;
-    image: string;
+    image: string | null;
     maxPlayers: number;
     minPlayers: number;
     playTime: number;
     title: string;
-    mechanics: [];
+    mechanics: Mechanic[];
 }
 
 interface Mechanic {
@@ -37,12 +40,16 @@ export default function GameMatcher() {
 
     const [filteredGames, setFilteredGames] = useState<BoardGame[]>([])
 
+    const [maxPlayerCount, setMaxPlayerCount] = useState<number>(0)
+
     const { data: userGames } = api.boardGames.getUserGames.useQuery(undefined, {
         onSuccess: (data) => {
             setBoardGames(data)
+            setMaxPlayerCount(findHighestPlayerCount(data, data.length)!)
         },
     });
 
+    console.log(maxPlayerCount)
 
     const [formData, setFormData] = useState<FormData>({
         numPlayers: 3, // Initialize with default values
@@ -114,43 +121,54 @@ export default function GameMatcher() {
                     <link rel="icon" href="/3d-meeple-svgrepo-com.svg" />
                 </Head>
                 <main className=" flex min-h-screen flex-col items-center pt-12 bg-slate-300 pb-36">
-                    <h1 className="text-3xl my-5">Game Matcher</h1>
+                    <div className="border-2 border-black rounded-lg p-10 bg-blue-100">
+                        <h1 className="text-3xl mb-12 text-center">Game Matcher</h1>
 
-                    <form onSubmit={handleSubmit} className='flex flex-col'>
-                        <label className='mt-5' htmlFor="numPlayers">How many players are at the table?</label>
-                        <input className='rounded-md pl-2' type="number" id="numPlayers" name="numPlayers" value={formData.numPlayers} onChange={handleChange} />
+                        <form onSubmit={handleSubmit} className='flex flex-col'>
 
-                        <label className='mt-5' htmlFor="complexity">What's your preferred maximum complexity?</label>
-                        <div className="flex items-center justify-between">
-                            <div className="form-control">
-                                <label className="label cursor-pointer">
-                                    <span className="label-text">More Simple</span>
-                                    <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-green-500" value={2} />
-                                </label>
+                            <div className='flex flex-col h-16'>
+                                <div className="flex justify-start items-center">
+                                    <label className='' htmlFor="numPlayers">Number of players:</label>
+                                    <input max={maxPlayerCount} className='rounded-md pl-2 w-16 ml-5' type="number" id="numPlayers" name="numPlayers" value={formData.numPlayers} onChange={handleChange} />
+                                </div>
+                                {maxPlayerCount ? <label className='mt-2 text-xs' htmlFor="numPlayers">*Max player count is currently {maxPlayerCount}.</label> : ""}
                             </div>
-                            <div className="form-control">
-                                <label className="label cursor-pointer">
-                                    <span className="label-text">Medium</span>
-                                    <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-yellow-500" value={3} />
-                                </label>
-                            </div>
-                            <div className="form-control">
-                                <label className="label cursor-pointer">
-                                    <span className="label-text">More Complex</span>
-                                    <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-red-500" value={5} />
-                                </label>
-                            </div>
-                        </div>
 
-                        <label className='mt-5' htmlFor="playTime">What's your preferred play time &#40;in minutes&#41;?</label>
-                        <input className='rounded-md pl-2' type='number' id="playTime" name="playTime" value={formData.playTime} onChange={handleChange} />
-
-                        <button type="submit" className=' w-1/2  mx-auto btn btn-secondary mt-5'>MeepleMatch!</button>
-                    </form>
+                            <label className='mt-5' htmlFor="complexity">What's your preferred maximum complexity?</label>
+                            <div className="flex  justify-between h-16">
+                                <div className="form-control">
+                                    <label className="label cursor-pointer">
+                                        <span className="label-text">More Simple</span>
+                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-green-500" value={2} />
+                                    </label>
+                                </div>
+                                <div className="form-control">
+                                    <label className="label cursor-pointer">
+                                        <span className="label-text">In the middle</span>
+                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-yellow-500" value={3} />
+                                    </label>
+                                </div>
+                                <div className="form-control">
+                                    <label className="label cursor-pointer">
+                                        <span className="label-text">More Complex</span>
+                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-red-500" value={5} />
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="h-16 mt-4">
+                                <div className="flex justify-start items-center">
+                                    <label className='' htmlFor="playTime">Preferred play time* &#40;in minutes&#41;: </label>
+                                    <input className='rounded-md pl-2 w-16 ml-5' type='number' id="playTime" name="playTime" value={formData.playTime} onChange={handleChange} />
+                                </div>
+                                <label className='mt-2 text-xs' htmlFor="numPlayers">*As shown on box.</label>
+                            </div>
+                            <button type="submit" className=' w-1/2  mx-auto btn btn-secondary mt-5'>MeepleMatch!</button>
+                        </form>
+                    </div>
 
                     {filteredGames.length ?
 
-                        <div className="dropdown dropdown-hover">
+                        <div className="dropdown dropdown-hover mt-5">
                             <label tabIndex={0} className="btn m-1">Sort By...</label>
                             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                 <li><a onClick={handleChangeSort} id="alphaAz">Alpha &#40;A-Z&#41;</a></li>
@@ -166,7 +184,7 @@ export default function GameMatcher() {
 
                         {filteredGames && filteredGames.map(game => {
                             return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center" key={game.id}>
-                                <h2 className="text-2xl font-bold">{game.title}</h2>
+                                <h2 className="text-2xl font-bold truncate truncate-ellipsis">{game.title}</h2>
                                 <p>Players: {game.minPlayers} - {game.maxPlayers}</p>
                                 <img className='inline-block mx-auto mb-5' src={game.image} alt={`Box art for ${game.title}`} />
                                 <p>Play time: {game.playTime} min</p>
@@ -200,4 +218,13 @@ function filterNumPlayers(gameMinPlayers: number, gameMaxPlayers: number, input:
 
 function filterPlayTime(gamePlayTime: number, input: number) {
     return gamePlayTime <= input
+}
+
+function findHighestPlayerCount(boardGames: BoardGame[], length: number) {
+    return boardGames.sort((a, b) => a.maxPlayers - b.maxPlayers)[length - 1]?.maxPlayers
+}
+
+function isMindMGMT(id: number) {
+    return id === 284653;
+    //set hidden if game is Mind MGMT
 }
