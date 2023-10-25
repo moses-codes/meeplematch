@@ -168,7 +168,7 @@ export default function GameMatcher() {
 
                     {filteredGames.length ?
 
-                        <div className="dropdown dropdown-hover">
+                        <div className="dropdown dropdown-hover mt-5">
                             <label tabIndex={0} className="btn m-1">Sort By...</label>
                             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                 <li><a onClick={handleChangeSort} id="alphaAz">Alpha &#40;A-Z&#41;</a></li>

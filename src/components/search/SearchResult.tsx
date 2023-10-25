@@ -52,8 +52,8 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
             updateLibrary({ id: e.id })
         },
         onError: (e) => {
-            toast.error('Error')
-            console.log(getHTTPStatusCodeFromError(e))
+            toast.error(`Error: could not add game`)
+            console.log()
         },
     }))
 
@@ -83,7 +83,7 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
     }
 
     return (
-        <li className="flex justify-between py-2" >
+        <li className="flex items-center justify-between py-2 px-4 border-2 border-slate-400 rounded-md my-3 mx-2" >
             {`${title} (${yearPublished})`}
             <button
                 onClick={handleClick}
