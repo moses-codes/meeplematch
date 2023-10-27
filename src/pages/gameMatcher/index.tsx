@@ -162,7 +162,16 @@ export default function GameMatcher() {
                                 </div>
                                 <label className='mt-2 text-xs' htmlFor="numPlayers">*As shown on box.</label>
                             </div>
-                            <button type="submit" className=' w-1/2  mx-auto btn btn-secondary mt-5'>MeepleMatch!</button>
+                            {
+
+                                <button type="submit" className={` w-1/2  mx-auto btn btn-secondary mt-5
+                                    ${boardGames.length === 0 && 'btn-disabled'}
+                                    `}>MeepleMatch!</button>
+
+                            }
+                            {
+                                boardGames.length === 0 && <label className="text-center pt-2">Your shelf is empty!</label>
+                            }
                         </form>
                     </div>
 
