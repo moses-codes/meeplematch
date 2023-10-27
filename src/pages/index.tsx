@@ -7,6 +7,7 @@ import { api } from "~/utils/api";
 
 export default function Home() {
 
+  const { data: sessionData } = useSession();
   return (
     <>
       <Head>
@@ -15,17 +16,22 @@ export default function Home() {
         <link rel="icon" href="/3d-meeple-svgrepo-com.svg" />
       </Head >
       <Layout>
-        <main className=" flex min-h-screen flex-col items-center justify-center bg-blue-400">
+        <main className=" flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-300 to-blue-700">
 
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-            <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-              <img className="h-20 mr-5 inline" src="/3d-meeple-svgrepo-com.svg" /><span className="text-black">Meeple</span>Match
-            </h1>
-            <h2 className="font-bold text-2xl"><span className="text-white">Guaranteed Fun </span><span className="text-black">&#40;For Everyone&#41;</span></h2>
+            <div className='flex items-center flex-wrap'>
+              <img className="h-20 lg:h-32 mr-5 block" src="/3d-meeple-svgrepo-com.svg" />
+              <div>
+                <h1 className="text-3xl lg:text-left text-center lg:text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+                  <span className="text-black">Meeple</span>Match
+                </h1>
+                <h2 className="font-semibold text-lg lg:text-xl text-center mt-3"><span className="text-white">Guaranteed Fun </span><span className="text-black">&#40;For Everyone&#41;</span></h2>
+              </div>
+            </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
               <Link
                 className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white transition-all hover:-translate-y-2 hover:bg-white/20"
-                href="/Library"
+                href="/shelf"
               // target="_blank"
               >
                 <h3 className="text-2xl font-bold">Track your board games</h3>
@@ -35,7 +41,7 @@ export default function Home() {
               </Link>
               <Link
                 className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white transition-all hover:-translate-y-2 hover:bg-white/20"
-                href="/gameMatcher"
+                href={sessionData ? '/gameMatcher' : ''}
               // target="_blank"
               >
                 <h3 className="text-2xl font-bold">Find the perfect game</h3>
@@ -61,19 +67,21 @@ export default function Home() {
 function AuthShowcase() {
   const { data: sessionData } = useSession();
   //use the useSession function from nextAuth
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-    //fetch the secretMessage from the example api router defined in trpc. 
-    //this is the API -- instead of using REST syntax, we can access the backend using the useQuery function of trpc.
-    undefined, // no input. this function doesn't require anything -- it simply returns the value. 
-    { enabled: sessionData?.user !== undefined }
-    //an object where enabled is set to a boolean that tells us if a user is present by accessing the session data. no session data, then it is set to false. 
-  );
+
+  console.log(sessionData)
 
   return (
+
     <div className="flex flex-col items-center justify-center gap-4">
-      <button>
-        {sessionData ? "Sign out" : "Sign in to get started!"}
-      </button>
+
+      {sessionData ? <button className="btn btn-primary" >Welcome back, {sessionData.user.name?.split(' ')[0]}!</button>
+
+        :
+        <button className="btn btn-primary"
+          onClick={() => void signIn()}
+        >Sign in to get started</button>
+
+      }
     </div >
 
   );

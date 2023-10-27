@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Layout from "~/components/layout/Layout";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useState } from "react"
@@ -88,11 +88,11 @@ export default function Home() {
                     <link rel="icon" href="/3d-meeple-svgrepo-com.svg" />
                 </Head>
                 <main className=" flex min-h-screen flex-col items-center bg-slate-300">
-                    <h1 className="text-5xl py-10">Library</h1>
+                    <h1 className="text-5xl pt-10 pb-4">Library</h1>
                     <div className="">
                         {boardGames.length ?
-                            <div className="dropdown dropdown-hover ml-24">
-                                <label tabIndex={0} className="btn m-1">Sort By...</label>
+                            <div className="dropdown dropdown-hover  w-full flex justify-center">
+                                <label tabIndex={0} className="btn w-52">Sort By...</label>
                                 <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                     <li><a onClick={handleChangeSort} id="alphaAz">Alpha &#40;A-Z&#41;</a></li>
                                     <li><a onClick={handleChangeSort} id="alphaZa">Alpha &#40;Z-A&#41;</a></li>
@@ -100,7 +100,7 @@ export default function Home() {
                                     <li><a onClick={handleChangeSort} id="complexityDesc">Complexity &#40;desc.&#41;</a></li>
                                 </ul>
                             </div>
-                            : <></>
+                            : <h2 className="text-center text-2xl">Your shelf is empty! Why not <Link href='/search'><span className="text-blue-500 hover:underline">add some games?</span></Link></h2>
                         }
 
 
