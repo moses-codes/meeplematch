@@ -9,7 +9,7 @@ export default function SignIn({ providers }: { providers: AppProps }) {
 
     console.log(providers)
     return (
-        <div className="h-screen w-screen bg-gradient-to-b from-blue-300 to-blue-700 border-2 border-red-400 flex items-center justify-center">
+        <div className="h-screen w-screen bg-gradient-to-b from-blue-300 to-blue-700 flex items-center justify-center">
 
             <div className="card w-96 bg-base-100 shadow-xl h-96 py-5 px-5">
                 <img className='h-1/4' src='/3d-meeple-svgrepo-com.svg' />
