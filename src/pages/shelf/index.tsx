@@ -6,7 +6,7 @@ import Layout from "~/components/layout/Layout";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { useState } from "react"
+import { ReactEventHandler, ReactHTMLElement, useState } from "react"
 
 import { api } from "~/utils/api";
 import { type } from "os";
@@ -14,7 +14,7 @@ import { type } from "os";
 interface BoardGame {
     complexity: number;
     id: number;
-    image: string;
+    image: string | null;
     maxPlayers: number;
     minPlayers: number;
     playTime: number;
@@ -29,7 +29,7 @@ interface Mechanic {
 
 export default function Home() {
 
-    const [boardGames, setBoardGames] = useState<BoardGame[]>([])
+    const [boardGames, setBoardGames] = useState<any>([])
 
     const removeGame = api.boardGames.removeGameFromShelf.useMutation({
         onSuccess: (removedGame) => {
@@ -45,9 +45,10 @@ export default function Home() {
         }
     });
 
-    const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeSort = (e: React.MouseEvent<HTMLButtonElement>) => {
 
-        let input = e.target.id
+        let target = e.target as HTMLButtonElement
+        let input = target.id
 
         if (input === "alphaAz") {
             setBoardGames([...boardGames].sort((a, b) => a.title.localeCompare(b.title)))
@@ -66,16 +67,18 @@ export default function Home() {
 
     const { data: userGames } = api.boardGames.getUserGames.useQuery(undefined, {
         onSuccess: (data) => {
-            setBoardGames(data)
+            console.log(data)
+            setBoardGames(data);
+            console.log('usergames are', userGames)
         },
     });
 
-    async function handleClick(e) {
-        let deletedGameId: number = Number(e.target.value)
-        const result = await removeGame.mutate({ id: deletedGameId })
+    async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+        let deletedGameId: number = Number(e.currentTarget.value);
+        const result = await removeGame.mutate({ id: deletedGameId });
     }
 
-    console.log('the users games are: ', { boardGames })
+    // console.log('the users games are: ', { boardGames })
 
 
 
@@ -90,14 +93,14 @@ export default function Home() {
                 <main className=" flex min-h-screen flex-col items-center bg-slate-300">
                     <h1 className="text-5xl pt-10 pb-4">Library</h1>
                     <div className="">
-                        {boardGames.length ?
+                        {boardGames?.length ?
                             <div className="dropdown dropdown-hover  w-full flex justify-center">
                                 <label tabIndex={0} className="btn w-52">Sort By...</label>
                                 <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                    <li><a onClick={handleChangeSort} id="alphaAz">Alpha &#40;A-Z&#41;</a></li>
-                                    <li><a onClick={handleChangeSort} id="alphaZa">Alpha &#40;Z-A&#41;</a></li>
-                                    <li><a onClick={handleChangeSort} id="complexityAsc">Complexity &#40;asc.&#41;</a></li>
-                                    <li><a onClick={handleChangeSort} id="complexityDesc">Complexity &#40;desc.&#41;</a></li>
+                                    <li><button onClick={handleChangeSort} id="alphaAz">Alpha &#40;A-Z&#41;</button></li>
+                                    <li><button onClick={handleChangeSort} id="alphaZa">Alpha &#40;Z-A&#41;</button></li>
+                                    <li><button onClick={handleChangeSort} id="complexityAsc">Complexity &#40;asc.&#41;</button></li>
+                                    <li><button onClick={handleChangeSort} id="complexityDesc">Complexity &#40;desc.&#41;</button></li>
                                 </ul>
                             </div>
                             : <h2 className="text-center text-2xl">Your shelf is empty! Why not <Link href='/search'><span className="text-blue-500 hover:underline">add some games?</span></Link></h2>
@@ -110,7 +113,7 @@ export default function Home() {
                                 return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center  mx-2" key={game.id}>
                                     <h2 className="text-2xl font-bold truncate truncate-ellipsis mb-4">{game.title}</h2>
 
-                                    <img className='inline-block mx-auto mb-4 h-32 rounded-md' src={game.image} alt={`Box art for ${game.title}`} />
+                                    <img className='inline-block mx-auto mb-4 h-32 rounded-md' src={game.image || ''} alt={`Box art for ${game.title}`} />
                                     {game.minPlayers === game.maxPlayers ?
                                         game.minPlayers === 1 ? <p>1 player</p> : <p>{game.maxPlayers} players</p>
                                         :

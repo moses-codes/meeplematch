@@ -6,23 +6,24 @@ import {
     protectedProcedure,
     publicProcedure,
 } from "~/server/api/trpc";
-
-const bgInfoSchema = z.object({
-    title: z.string(),
-    playTime: z.number(),
-    minPlayers: z.number(),
-    maxPlayers: z.number(),
-    complexity: z.number(),
-    image: z.string(),
-    id: z.number(),
-});
-
 const bgMechanicsSchema = z.array(
     z.object({
         id: z.number(),
         mechanicText: z.string(),
     })
 );
+const bgInfoSchema = z.object({
+    title: z.string(),
+    playTime: z.number(),
+    minPlayers: z.number(),
+    maxPlayers: z.number(),
+    complexity: z.number(),
+    image: z.string().nullable(),
+    id: z.number(),
+    mechanics: bgMechanicsSchema,
+});
+
+
 
 export const boardGamesRouter = createTRPCRouter({
 
@@ -41,7 +42,7 @@ export const boardGamesRouter = createTRPCRouter({
                 },
             })
 
-            return result
+            return result || []
 
         }),
     getUserGameIds: protectedProcedure
