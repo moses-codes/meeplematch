@@ -19,7 +19,7 @@ interface BoardGame {
     minPlayers: number;
     playTime: number;
     title: string;
-    mechanics: [];
+    mechanics: Mechanic[];
 }
 
 interface Mechanic {
@@ -29,7 +29,7 @@ interface Mechanic {
 
 export default function Home() {
 
-    const [boardGames, setBoardGames] = useState<any>([])
+    const [boardGames, setBoardGames] = useState<BoardGame[]>([])
 
     const removeGame = api.boardGames.removeGameFromShelf.useMutation({
         onSuccess: (removedGame) => {
@@ -67,9 +67,9 @@ export default function Home() {
 
     const { data: userGames } = api.boardGames.getUserGames.useQuery(undefined, {
         onSuccess: (data) => {
-            console.log(data)
+            // console.log(data)
             setBoardGames(data);
-            console.log('usergames are', userGames)
+            console.log('usergames are', data)
         },
     });
 

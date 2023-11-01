@@ -1,7 +1,6 @@
 import Link from "next/link"
+import Image from "next/image";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Head from "next/head";
-import Layout from "~/components/layout/Layout";
 
 
 import { api } from "~/utils/api";
@@ -40,10 +39,10 @@ export default function Navbar() {
 function AuthShowcase() {
     const { data: sessionData } = useSession();
     //use the useSession function from nextAuth
-    const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-        undefined, // no input
-        { enabled: sessionData?.user !== undefined }
-    );
+    // const { data: secretMessage } = api.example.getSecretMessage.useQuery(
+    //     undefined, // no input
+    //     { enabled: sessionData?.user !== undefined }
+    // );
 
     return (
         <div className="flex items-center justify-center max-w-min " >
