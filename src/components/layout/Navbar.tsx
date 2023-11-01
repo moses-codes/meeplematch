@@ -3,7 +3,9 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Layout from "~/components/layout/Layout";
 
+
 import { api } from "~/utils/api";
+
 
 export default function Navbar() {
     return (
@@ -53,7 +55,7 @@ function AuthShowcase() {
                 {sessionData &&
                     <div className="avatar">
                         <div className="h-10 mr-5 rounded-full">
-                            <img src={sessionData?.user.image} />
+                            <img src={sessionData?.user.image || ''} />
                         </div>
                     </div>}
                 {sessionData ? <p className="text-xs">Sign out</p> : <p className="text-xs">Sign in</p>}

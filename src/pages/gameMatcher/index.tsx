@@ -77,9 +77,11 @@ export default function GameMatcher() {
         });
     }
 
-    const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeSort = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
 
-        let input = e.target.id
+        console.log(e)
+
+        let input = ((e.target) as HTMLButtonElement).id
 
         if (input === "alphaAz") {
             setFilteredGames([...filteredGames].sort((a, b) => a.title.localeCompare(b.title)))
@@ -180,10 +182,10 @@ export default function GameMatcher() {
                         <div className="dropdown dropdown-hover mt-5">
                             <label tabIndex={0} className="btn m-1">Sort By...</label>
                             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                <li><a onClick={handleChangeSort} id="alphaAz">Alpha &#40;A-Z&#41;</a></li>
-                                <li><a onClick={handleChangeSort} id="alphaZa">Alpha &#40;Z-A&#41;</a></li>
-                                <li><a onClick={handleChangeSort} id="complexityAsc">Complexity &#40;asc.&#41;</a></li>
-                                <li><a onClick={handleChangeSort} id="complexityDesc">Complexity &#40;desc.&#41;</a></li>
+                                <li onClick={(e) => handleChangeSort} id="alphaAz">Alpha &#40;A-Z&#41;</li>
+                                <li onClick={(e) => handleChangeSort} id="alphaZa">Alpha &#40;Z-A&#41;</li>
+                                <li onClick={(e) => handleChangeSort} id="complexityAsc">Complexity &#40;asc.&#41;</li>
+                                <li onClick={(e) => handleChangeSort} id="complexityDesc">Complexity &#40;desc.&#41;</li>
                             </ul>
                         </div>
                         : <></>
@@ -195,7 +197,7 @@ export default function GameMatcher() {
                             return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center" key={game.id}>
                                 <h2 className="text-2xl font-bold truncate truncate-ellipsis">{game.title}</h2>
                                 <p>Players: {game.minPlayers} - {game.maxPlayers}</p>
-                                <img className='inline-block mx-auto mb-5' src={game.image} alt={`Box art for ${game.title}`} />
+                                <img className='inline-block mx-auto mb-5' src={game.image || ""} alt={`Box art for ${game.title}`} />
                                 <p>Play time: {game.playTime} min</p>
                                 <p>Complexity: {(game.complexity).toPrecision(3)} / 5</p>
                                 <details className="dropdown mb-5">
