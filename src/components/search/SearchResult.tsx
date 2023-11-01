@@ -72,11 +72,11 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
         <li className="flex items-center justify-between py-2 px-4 border-2 border-slate-400 rounded-md my-3 mx-2" >
             {`${title} (${yearPublished})`}
             <button
-                onClick={handleClick}
+                onClick={(e) => handleClick}
                 className={`btn-primary btn-xs rounded-md 
                 ${showInLibrary && 'btn-disabled btn-neutral opacity-75'}
                 `}
-                id={id}
+                id={`${id}`}
             >
 
                 {showInLibrary ? "IN LIBRARY" : "ADD"}
@@ -92,15 +92,7 @@ async function addGame(id: number, title: string) {
 
     // console.log('id equals', id)
 
-    let bgInfo: {
-        playTime: number;
-        minPlayers: number;
-        maxPlayers: number;
-        complexity: number;
-        image: string;
-        id: number;
-        title: string;
-    } = {
+    let bgInfo: BoardGame = {
         playTime: 0,
         minPlayers: 0,
         maxPlayers: 0,
@@ -108,6 +100,7 @@ async function addGame(id: number, title: string) {
         image: "",
         title: title,
         id: id,
+        mechanics: [],
     };
     let mechanics: {
         mechanicText: string,
@@ -144,6 +137,7 @@ async function addGame(id: number, title: string) {
                 complexity: complexity,
                 image: image,
                 id: id,
+                mechanics: []
             }
 
             console.log(mechanics, bgInfo)
