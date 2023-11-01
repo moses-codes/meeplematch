@@ -1,26 +1,11 @@
-import { ReactEventHandler, useState } from 'react'
-import { signIn, signOut, useSession } from "next-auth/react";
-// import Burger from '../../../public/burger2.svg'
-import Image from 'next/image'
-
-import { getHTTPStatusCodeFromError } from '@trpc/server/http';
-
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// import 
+import { useState } from 'react';
 
 import { api } from "~/utils/api";
 
-interface GameInfo {
-    playTime: number;
-    minPlayers: number;
-    maxPlayers: number;
-    complexity: number;
-    image: string;
-    title: string;
-    id: number;
-}
+
 interface BoardGame {
     complexity: number;
     id: number;
@@ -41,7 +26,7 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
     // console.log(title, isInLibrary)
 
     const bgInfo = api.boardGames.addGame.useMutation(({
-        onSuccess: async (e) => {
+        onSuccess: (e) => {
             const notifyAdd = () => {
                 toast.success(`${e.title} has been added to your library.`, {
                     position: toast.POSITION.TOP_RIGHT
@@ -51,7 +36,7 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
             setShowInLibrary(!showInLibrary)
             updateLibrary({ id: e.id })
         },
-        onError: (e) => {
+        onError: () => {
             toast.error(`Error: could not add game`)
             console.log()
         },
@@ -59,9 +44,9 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
 
     // const bgMechanics = api.boardGames.addMechanics.useMutation()
 
-    async function handleClick() {
+    function handleClick() {
         console.log('clicked')
-        let boardGameInfo = await addGame(id, title)!
+        const boardGameInfo = await addGame(id, title)!
         bgInfo.mutate(boardGameInfo)
     }
 
@@ -99,26 +84,27 @@ async function addGame(id: number, title: string) {
         id: id,
         mechanics: [],
     };
-    let mechanics: {
+    const mechanics: {
         mechanicText: string,
         id: number
     }[] = []
 
-    const gameInformation = await fetch(baseURLInfo + id + '&stats=1')
+    await fetch(baseURLInfo + id + '&stats=1')
         .then(response => response.text())
         .then(data => {
-            let xmlDocument = new DOMParser().parseFromString(data, "text/xml")
-            let boardGameResults = xmlDocument.querySelectorAll("item");
+            const xmlDocument = new DOMParser().parseFromString(data, "text/xml")
+            // let boardGameResults = xmlDocument.querySelectorAll("item");
 
             //pass in title & id from the parent component
 
-            let playTime: number = Number(xmlDocument.querySelector('playingtime')?.getAttribute('value'))
-            let minPlayers: number = Number(xmlDocument.querySelector('minplayers')?.getAttribute('value'))
-            let maxPlayers: number = Number(xmlDocument.querySelector('maxplayers')?.getAttribute('value'))
-            let complexity: number = Number(xmlDocument.querySelector('averageweight')?.getAttribute('value'))
-            let image: string = xmlDocument.querySelector('thumbnail')?.textContent!;
+            const playTime = Number(xmlDocument.querySelector('playingtime')?.getAttribute('value'))
+            const minPlayers = Number(xmlDocument.querySelector('minplayers')?.getAttribute('value'))
+            const maxPlayers = Number(xmlDocument.querySelector('maxplayers')?.getAttribute('value'))
+            const complexity = Number(xmlDocument.querySelector('averageweight')?.getAttribute('value'))
+            const thumbnailElement = xmlDocument.querySelector('thumbnail')?.textContent ?? '/meeple-group.svg'
+            const image: string = thumbnailElement
 
-            let links = xmlDocument.querySelectorAll('link[type="boardgamemechanic"]')
+            const links = xmlDocument.querySelectorAll('link[type="boardgamemechanic"]')
 
             links.forEach((link) => {
                 const id = Number(link.getAttribute('id'));

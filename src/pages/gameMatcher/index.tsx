@@ -1,12 +1,8 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+// import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 // import Link from "next/link";
 import React, { useState } from "react";
 import Layout from "~/components/layout/Layout";
-
-import dug from "../../../public/dug.png"
-
-import SearchResult from "~/components/search/SearchResult";
 
 import Image from "next/image";
 
@@ -42,7 +38,7 @@ export default function GameMatcher() {
 
     const [maxPlayerCount, setMaxPlayerCount] = useState<number>(0)
 
-    const { data: userGames } = api.boardGames.getUserGames.useQuery(undefined, {
+    api.boardGames.getUserGames.useQuery(undefined, {
         onSuccess: (data) => {
             setBoardGames(data)
             setMaxPlayerCount(findHighestPlayerCount(data, data.length)!)
@@ -81,7 +77,7 @@ export default function GameMatcher() {
 
         console.log(e)
 
-        let input = ((e.target) as HTMLButtonElement).id
+        const input = ((e.target) as HTMLButtonElement).id
 
         if (input === "alphaAz") {
             setFilteredGames([...filteredGames].sort((a, b) => a.title.localeCompare(b.title)))
@@ -102,9 +98,7 @@ export default function GameMatcher() {
         event.preventDefault();
         console.log(formData)
 
-        let result;
-
-        result = boardGames.filter(game => {
+        const result = boardGames.filter(game => {
             return filterComplexity(game.complexity, formData.complexity) && filterNumPlayers(game.minPlayers, game.maxPlayers, formData.numPlayers) && filterPlayTime(game.playTime, formData.playTime)
         })
             .sort((a, b) => b.complexity - a.complexity)
@@ -136,7 +130,7 @@ export default function GameMatcher() {
                                 {maxPlayerCount ? <label className='mt-2 text-xs' htmlFor="numPlayers">*Max player count is currently {maxPlayerCount}.</label> : ""}
                             </div>
 
-                            <label className='mt-5' htmlFor="complexity">What's your preferred maximum complexity?</label>
+                            <label className='mt-5' htmlFor="complexity">What&rsquo;s your preferred maximum complexity?</label>
                             <div className="flex  justify-between h-16">
                                 <div className="form-control">
                                     <label className="label cursor-pointer">
@@ -182,10 +176,10 @@ export default function GameMatcher() {
                         <div className="dropdown dropdown-hover mt-5">
                             <label tabIndex={0} className="btn m-1">Sort By...</label>
                             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                <li onClick={(e) => handleChangeSort} id="alphaAz">Alpha &#40;A-Z&#41;</li>
-                                <li onClick={(e) => handleChangeSort} id="alphaZa">Alpha &#40;Z-A&#41;</li>
-                                <li onClick={(e) => handleChangeSort} id="complexityAsc">Complexity &#40;asc.&#41;</li>
-                                <li onClick={(e) => handleChangeSort} id="complexityDesc">Complexity &#40;desc.&#41;</li>
+                                <li onClick={handleChangeSort} id="alphaAz">Alpha &#40;A-Z&#41;</li>
+                                <li onClick={handleChangeSort} id="alphaZa">Alpha &#40;Z-A&#41;</li>
+                                <li onClick={handleChangeSort} id="complexityAsc">Complexity &#40;asc.&#41;</li>
+                                <li onClick={handleChangeSort} id="complexityDesc">Complexity &#40;desc.&#41;</li>
                             </ul>
                         </div>
                         : <></>
@@ -193,11 +187,11 @@ export default function GameMatcher() {
 
                     <ul className="flex justify-center flex-wrap w-screen my-5">
 
-                        {filteredGames && filteredGames.map(game => {
+                        {filteredGames?.map(game => {
                             return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center" key={game.id}>
                                 <h2 className="text-2xl font-bold truncate truncate-ellipsis">{game.title}</h2>
                                 <p>Players: {game.minPlayers} - {game.maxPlayers}</p>
-                                <img className='inline-block mx-auto mb-5' src={game.image || ""} alt={`Box art for ${game.title}`} />
+                                <Image className='inline-block mx-auto mb-5' src={game.image ?? ""} alt={`Box art for ${game.title}`} />
                                 <p>Play time: {game.playTime} min</p>
                                 <p>Complexity: {(game.complexity).toPrecision(3)} / 5</p>
                                 <details className="dropdown mb-5">
@@ -235,7 +229,7 @@ function findHighestPlayerCount(boardGames: BoardGame[], length: number) {
     return boardGames.sort((a, b) => a.maxPlayers - b.maxPlayers)[length - 1]?.maxPlayers
 }
 
-function isMindMGMT(id: number) {
-    return id === 284653;
-    //set hidden if game is Mind MGMT
-}
+// function isMindMGMT(id: number) {
+//     return id === 284653;
+//     //set hidden if game is Mind MGMT
+// }

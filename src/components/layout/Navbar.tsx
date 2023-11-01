@@ -3,9 +3,6 @@ import Image from "next/image";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 
-import { api } from "~/utils/api";
-
-
 export default function Navbar() {
     return (
         <div className="navbar bg-base-200">
@@ -20,7 +17,9 @@ export default function Navbar() {
                         <li><Link href='/search'>Add Game</Link></li>
                     </ul>
                 </div>
-                <Link href='/shelf'><div className="btn btn-ghost normal-case text-sm lg:text-xl"><img className="h-10" src="/3d-meeple-svgrepo-com.svg" /><span className="hidden md:inline">MeepleMatch</span></div></Link>
+                <Link href='/shelf'><div className="btn btn-ghost normal-case text-sm lg:text-xl">
+                    <Image alt='meeplematch logo' className="h-10" src="/3d-meeple-svgrepo-com.svg" /><span className="hidden md:inline">
+                        MeepleMatch</span></div></Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1 font-semibold">
@@ -54,7 +53,7 @@ function AuthShowcase() {
                 {sessionData &&
                     <div className="avatar">
                         <div className="h-10 mr-5 rounded-full">
-                            <img src={sessionData?.user.image || ''} />
+                            <Image alt='user profile picture' height={50} width={50} src={sessionData?.user.image ?? ''} />
                         </div>
                     </div>}
                 {sessionData ? <p className="text-xs">Sign out</p> : <p className="text-xs">Sign in</p>}
