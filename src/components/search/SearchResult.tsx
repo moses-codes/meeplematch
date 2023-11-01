@@ -61,21 +61,7 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
 
     async function handleClick(e: ReactEventHandler) {
         // console.log(e.target.id)
-        let boardGameInfo: {
-            bgInfo: {
-                playTime: number;
-                minPlayers: number;
-                maxPlayers: number;
-                complexity: number;
-                image: string;
-                id: number;
-                title: string;
-            };
-            bgMechanics: {
-                id: number;
-                mechanicText: string;
-            }[]
-        } = await addGame(id, title)!
+        let boardGameInfo = await addGame(id, title)!
         // console.log(boardGameInfo)
         bgInfo.mutate(boardGameInfo)
         // isInLibrary = !isInLibrary
@@ -100,14 +86,7 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
     )
 }
 
-async function addGame(id: number, title: string): Promise<{
-    playTime: number;
-    minPlayers: number;
-    maxPlayers: number;
-    complexity: number;
-    image: string;
-    id: number;
-}> {
+async function addGame(id: number, title: string) {
 
     const baseURLInfo = "https://boardgamegeek.com/xmlapi2/thing?id="
 
