@@ -59,20 +59,17 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
 
     // const bgMechanics = api.boardGames.addMechanics.useMutation()
 
-    async function handleClick(e: ReactEventHandler) {
-        // console.log(e.target.id)
+    async function handleClick() {
+        console.log('clicked')
         let boardGameInfo = await addGame(id, title)!
-        // console.log(boardGameInfo)
         bgInfo.mutate(boardGameInfo)
-        // isInLibrary = !isInLibrary
-        // bgMechanics.mutate()
     }
 
     return (
         <li className="flex items-center justify-between py-2 px-4 border-2 border-slate-400 rounded-md my-3 mx-2" >
             {`${title} (${yearPublished})`}
             <button
-                onClick={(e) => handleClick}
+                onClick={handleClick}
                 className={`btn-primary btn-xs rounded-md 
                 ${showInLibrary && 'btn-disabled btn-neutral opacity-75'}
                 `}
