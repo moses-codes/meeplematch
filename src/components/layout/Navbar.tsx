@@ -18,7 +18,7 @@ export default function Navbar() {
                     </ul>
                 </div>
                 <Link href='/shelf'><div className="btn btn-ghost normal-case text-sm lg:text-xl">
-                    <Image alt='meeplematch logo' className="h-10" src="/3d-meeple-svgrepo-com.svg" /><span className="hidden md:inline">
+                    <Image width={100} height={100} alt='meeplematch logo' className="h-10" src="/3d-meeple-svgrepo-com.svg" /><span className="hidden md:inline">
                         MeepleMatch</span></div></Link>
             </div>
             <div className="navbar-center hidden lg:flex">

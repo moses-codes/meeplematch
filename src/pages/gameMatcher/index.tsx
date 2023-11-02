@@ -191,7 +191,7 @@ export default function GameMatcher() {
                             return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center" key={game.id}>
                                 <h2 className="text-2xl font-bold truncate truncate-ellipsis">{game.title}</h2>
                                 <p>Players: {game.minPlayers} - {game.maxPlayers}</p>
-                                <Image className='inline-block mx-auto mb-5' src={game.image ?? ""} alt={`Box art for ${game.title}`} />
+                                <Image height={100} width={100} className='inline-block mx-auto mb-5' src={game.image ?? ""} alt={`Box art for ${game.title}`} />
                                 <p>Play time: {game.playTime} min</p>
                                 <p>Complexity: {(game.complexity).toPrecision(3)} / 5</p>
                                 <details className="dropdown mb-5">

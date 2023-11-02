@@ -1,4 +1,4 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+// import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import Layout from "~/components/layout/Layout";
@@ -6,10 +6,10 @@ import Layout from "~/components/layout/Layout";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { ReactEventHandler, ReactHTMLElement, useState } from "react"
+import { useState } from "react"
 
 import { api } from "~/utils/api";
-import { type } from "os";
+import Image from "next/image";
 
 interface BoardGame {
     complexity: number;
@@ -47,8 +47,8 @@ export default function Home() {
 
     const handleChangeSort = (e: React.MouseEvent<HTMLButtonElement>) => {
 
-        let target = e.target as HTMLButtonElement
-        let input = target.id
+        const target = e.target as HTMLButtonElement
+        const input = target.id
 
         if (input === "alphaAz") {
             setBoardGames([...boardGames].sort((a, b) => a.title.localeCompare(b.title)))
@@ -65,7 +65,7 @@ export default function Home() {
 
     }
 
-    const { data: userGames } = api.boardGames.getUserGames.useQuery(undefined, {
+    api.boardGames.getUserGames.useQuery(undefined, {
         onSuccess: (data) => {
             // console.log(data)
             setBoardGames(data);
@@ -74,8 +74,8 @@ export default function Home() {
     });
 
     async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
-        let deletedGameId: number = Number(e.currentTarget.value);
-        const result = await removeGame.mutate({ id: deletedGameId });
+        const deletedGameId = Number(e.currentTarget.value);
+        await removeGame.mutate({ id: deletedGameId });
     }
 
     // console.log('the users games are: ', { boardGames })
@@ -109,11 +109,11 @@ export default function Home() {
 
                         <ul className="flex flex-wrap justify-around w-screen my-5  container mx-auto ">
 
-                            {boardGames && boardGames.map((game: BoardGame) => {
+                            {boardGames?.map((game: BoardGame) => {
                                 return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center  mx-2" key={game.id}>
                                     <h2 className="text-2xl font-bold truncate truncate-ellipsis mb-4">{game.title}</h2>
 
-                                    <img className='inline-block mx-auto mb-4 h-32 rounded-md' src={game.image || ''} alt={`Box art for ${game.title}`} />
+                                    <Image height={100} width={100} className='inline-block mx-auto mb-4 h-32 rounded-md' src={game.image ?? ''} alt={`Box art for ${game.title}`} />
                                     {game.minPlayers === game.maxPlayers ?
                                         game.minPlayers === 1 ? <p>1 player</p> : <p>{game.maxPlayers} players</p>
                                         :

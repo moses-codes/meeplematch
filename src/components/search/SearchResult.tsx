@@ -46,8 +46,18 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
 
     function handleClick() {
         console.log('clicked')
-        const boardGameInfo = await addGame(id, title)!
-        bgInfo.mutate(boardGameInfo)
+        try {
+            (async function click() {
+                await addGame(id, title)!
+                    .then(data => bgInfo.mutate(data))
+                    .catch(err => console.error(err))
+                // bgInfo.mutate(boardGameInfo)
+            })()
+
+        } catch (error) {
+            console.error(error)
+        }
+
     }
 
     return (
