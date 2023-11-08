@@ -1,9 +1,9 @@
-import { Mechanic } from "@prisma/client";
-import { signIn, signOut, useSession } from "next-auth/react";
+// import { Mechanic } from "@prisma/client";
+// import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 // import Link from "next/link";
 import React, { useState } from "react";
-import { number } from "zod";
+// import { number } from "zod";
 import Layout from "~/components/layout/Layout";
 
 import SearchResult from "~/components/search/SearchResult";
@@ -17,28 +17,30 @@ import { api } from "~/utils/api";
 //     type: string
 // }
 
-interface BoardGame {
-    complexity: number;
-    id: number;
-    image: string | null;
-    maxPlayers: number;
-    minPlayers: number;
-    playTime: number;
-    title: string;
-    mechanics: { id: number; mechanicText: string }[];
-}
+// interface BoardGame {
+//     complexity: number;
+//     id: number;
+//     image: string | null;
+//     maxPlayers: number;
+//     minPlayers: number;
+//     playTime: number;
+//     title: string;
+//     mechanics: { id: number; mechanicText: string }[];
+// }
 
 export default function Search() {
 
     const [boardGames, setBoardGames] = useState<{ id: number }[]>([])
 
-    const getUserGames = api.boardGames.getUserGameIds.useQuery(undefined, {
+    const { data: games } = api.boardGames.getUserGameIds.useQuery(undefined, {
         onSuccess: (data) => {
             setBoardGames(data)
             console.log(data)
         },
 
     });
+
+    console.log(games)
 
     interface SearchResult {
         title: string;
@@ -50,17 +52,23 @@ export default function Search() {
     const [searchInput, setSearchInput] = useState('')
     const [searchResults, setSearchResults] = useState<SearchResult[]>([])
 
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault()
-        let results: SearchResult[] = await boardGameSearch(searchInput)
-        setSearchResults(results)
+    function handleSubmit(e: React.FormEvent): void {
+        e.preventDefault();
+
+        boardGameSearch(searchInput)
+            .then((results: SearchResult[]) => {
+                setSearchResults(results);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
     }
 
     function updateLibrary(newGame: { id: number }) {
         setBoardGames([...boardGames, newGame])
     }
 
-    let searchResultList = (
+    const searchResultList = (
         <ul>
             {searchResults.map((result) => {
                 return <SearchResult title={result.title}
@@ -105,9 +113,7 @@ export default function Search() {
     );
 }
 
-interface Cache {
-    [id: string]: number;
-}
+type Cache = Record<string, number>
 
 interface SearchResult {
     title: string,
@@ -116,10 +122,10 @@ interface SearchResult {
     isInLibrary: boolean,
 }
 
-async function boardGameSearch(input: String) {
+async function boardGameSearch(input: string) {
     const baseURLSearch = "https://boardgamegeek.com/xmlapi2/search?query="
 
-    let idsCache: Cache = {}
+    const idsCache: Cache = {}
 
     // let idSetter = 0
 
@@ -130,16 +136,16 @@ async function boardGameSearch(input: String) {
             return data
         })
 
-    let xmlDocument = new DOMParser().parseFromString(searchResults, "text/xml")
-    let boardGameResults = xmlDocument.querySelectorAll("item");
+    const xmlDocument = new DOMParser().parseFromString(searchResults, "text/xml")
+    const boardGameResults = xmlDocument.querySelectorAll("item");
 
-    let boardGames: SearchResult[] = []
+    const boardGames: SearchResult[] = []
 
-    for (let game of boardGameResults) {
-        let title: string = game.querySelector('name')?.getAttribute("value")!
-        let id: number = Number(game.getAttribute('id'))
-        let yearPublished: number = Number(game.querySelector('yearpublished')?.getAttribute("value")!)
-        let isInLibrary: boolean = false
+    for (const game of boardGameResults) {
+        const title: string = game.querySelector('name')?.getAttribute("value") ?? "No title found"
+        const id = Number(game.getAttribute('id'))
+        const yearPublished = Number(game.querySelector('yearpublished')?.getAttribute("value")) ?? "No year found"
+        // let isInLibrary: boolean = false
 
         if (idsCache[id]) {
             continue;

@@ -1,9 +1,9 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import Layout from "~/components/layout/Layout";
 
-import { api } from "~/utils/api";
+import Image from "next/image";
 
 export default function Home() {
 
@@ -20,7 +20,7 @@ export default function Home() {
 
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
             <div className='flex items-center flex-wrap'>
-              <img className="h-20 lg:h-32 mr-5 block" src="/3d-meeple-svgrepo-com.svg" />
+              <Image width={100} height={100} alt='MeepleMatch logo' className="h-20 lg:h-32 mr-5 block" src="/3d-meeple-svgrepo-com.svg" />
               <div>
                 <h1 className="text-3xl lg:text-left text-center lg:text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
                   <span className="text-black">Meeple</span>Match
@@ -46,7 +46,7 @@ export default function Home() {
               >
                 <h3 className="text-2xl font-bold">Find the perfect game</h3>
                 <div className="text-lg">
-                  Input your players, difficulty, and time. We'll choose the perfect game.
+                  Input your players, difficulty, and time. We&rsquo;ll choose the perfect game.
                 </div>
               </Link>
             </div>

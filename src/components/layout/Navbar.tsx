@@ -1,10 +1,6 @@
 import Link from "next/link"
+import Image from "next/image";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Head from "next/head";
-import Layout from "~/components/layout/Layout";
-
-
-import { api } from "~/utils/api";
 
 
 export default function Navbar() {
@@ -21,7 +17,9 @@ export default function Navbar() {
                         <li><Link href='/search'>Add Game</Link></li>
                     </ul>
                 </div>
-                <Link href='/shelf'><div className="btn btn-ghost normal-case text-sm lg:text-xl"><img className="h-10" src="/3d-meeple-svgrepo-com.svg" /><span className="hidden md:inline">MeepleMatch</span></div></Link>
+                <Link href='/shelf'><div className="btn btn-ghost normal-case text-sm lg:text-xl">
+                    <Image width={100} height={100} alt='meeplematch logo' className="h-10" src="/3d-meeple-svgrepo-com.svg" /><span className="hidden md:inline">
+                        MeepleMatch</span></div></Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1 font-semibold">
@@ -40,10 +38,10 @@ export default function Navbar() {
 function AuthShowcase() {
     const { data: sessionData } = useSession();
     //use the useSession function from nextAuth
-    const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-        undefined, // no input
-        { enabled: sessionData?.user !== undefined }
-    );
+    // const { data: secretMessage } = api.example.getSecretMessage.useQuery(
+    //     undefined, // no input
+    //     { enabled: sessionData?.user !== undefined }
+    // );
 
     return (
         <div className="flex items-center justify-center max-w-min " >
@@ -55,7 +53,7 @@ function AuthShowcase() {
                 {sessionData &&
                     <div className="avatar">
                         <div className="h-10 mr-5 rounded-full">
-                            <img src={sessionData?.user.image || ''} />
+                            <Image alt='user profile picture' height={50} width={50} src={sessionData?.user.image ?? ''} />
                         </div>
                     </div>}
                 {sessionData ? <p className="text-xs">Sign out</p> : <p className="text-xs">Sign in</p>}
