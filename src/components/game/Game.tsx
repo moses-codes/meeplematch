@@ -1,8 +1,11 @@
 import React from 'react'
-
+// import { api } from "~/utils/api";
 import Image from 'next/image';
 
-interface BoardGame {
+// import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+interface BoardGameProps {
     complexity: number;
     id: number;
     image: string | null;
@@ -11,6 +14,9 @@ interface BoardGame {
     playTime: number;
     title: string;
     mechanics: Mechanic[];
+    handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    isBeingDeleted: boolean;
+
 }
 
 interface Mechanic {
@@ -18,9 +24,10 @@ interface Mechanic {
     mechanicText: string,
 }
 
-const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, mechanics }: BoardGame, handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void, isBeingDeleted: boolean) => {
+const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, mechanics, handleClick, isBeingDeleted }: BoardGameProps) => {
 
-    console.log(handleClick)
+
+    // console.log(handleClick)
     return (
         <>
 

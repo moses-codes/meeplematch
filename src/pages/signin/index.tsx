@@ -48,7 +48,7 @@ export default function SignIn({ providers }: { providers: CustomPageProps }) {
                                 className="btn btn-neutral rounded-xl w-60 flex "
                                 key={provider.id}
                                 onClick={() => {
-                                    signIn(provider.id, {
+                                    void signIn(provider.id, {
                                         callbackUrl: `/shelf`
                                     });
                                 }}

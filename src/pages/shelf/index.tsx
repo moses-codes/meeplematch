@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useState } from "react"
 
 import { api } from "~/utils/api";
-import Image from "next/image";
+// import Image from "next/image";
 
 interface BoardGame {
     complexity: number;
@@ -87,8 +87,9 @@ export default function Home() {
     // gamesLoading ? console.log('loading') : console.log('games loaded', boardGames)
 
     function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
-        console.log('clicked')
+        // console.log('clicked')
         const deletedGameId = Number(e.currentTarget.value);
+        // console.log(deletedGameId)
         removeGame.mutate({ id: deletedGameId });
     }
 
