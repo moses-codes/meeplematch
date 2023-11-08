@@ -31,26 +31,26 @@ interface Mechanic {
 }
 
 export default function GameMatcher() {
-
-    const [boardGames, setBoardGames] = useState<BoardGame[]>([])
-
-    const [filteredGames, setFilteredGames] = useState<BoardGame[]>([])
-
-    const [maxPlayerCount, setMaxPlayerCount] = useState<number>(0)
-
-    api.boardGames.getUserGames.useQuery(undefined, {
+    const { data: userGames, isLoading: gamesLoading, isSuccess } = api.boardGames.getUserGames.useQuery(undefined, {
         onSuccess: (data) => {
             setBoardGames(data)
             setMaxPlayerCount(findHighestPlayerCount(data, data.length)!)
         },
     });
 
-    console.log(maxPlayerCount)
+
+    const [filteredGames, setFilteredGames] = useState<BoardGame[]>([])
+
+    const [maxPlayerCount, setMaxPlayerCount] = useState<number>(0)
+
+    const [boardGames, setBoardGames] = useState<BoardGame[]>(isSuccess ? userGames : [])
+
+    console.log(maxPlayerCount, userGames)
 
     const [formData, setFormData] = useState<FormData>({
         numPlayers: 3, // Initialize with default values
         complexity: 0,
-        playTime: 60,
+        playTime: 120,
     });
 
     // Your handleChange function (assuming it's something like this)
@@ -120,53 +120,65 @@ export default function GameMatcher() {
                     <div className="border-2 border-black rounded-lg p-10 bg-blue-100">
                         <h1 className="text-3xl mb-12 text-center">Game Matcher</h1>
 
-                        <form onSubmit={handleSubmit} className='flex flex-col'>
+                        <form onSubmit={handleSubmit} className='flex flex-col h-96 w-96'>
 
-                            <div className='flex flex-col h-16'>
-                                <div className="flex justify-start items-center">
-                                    <label className='' htmlFor="numPlayers">Number of players:</label>
-                                    <input max={maxPlayerCount} className='rounded-md pl-2 w-16 ml-5' type="number" id="numPlayers" name="numPlayers" value={formData.numPlayers} onChange={handleChange} />
-                                </div>
-                                {maxPlayerCount ? <label className='mt-2 text-xs' htmlFor="numPlayers">*Max player count is currently {maxPlayerCount}.</label> : ""}
-                            </div>
-
-                            <label className='mt-5' htmlFor="complexity">What&rsquo;s your preferred maximum complexity?</label>
-                            <div className="flex  justify-between h-16">
-                                <div className="form-control">
-                                    <label className="label cursor-pointer">
-                                        <span className="label-text">More Simple</span>
-                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-green-500" value={2} />
-                                    </label>
-                                </div>
-                                <div className="form-control">
-                                    <label className="label cursor-pointer">
-                                        <span className="label-text">In the middle</span>
-                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-yellow-500" value={3} />
-                                    </label>
-                                </div>
-                                <div className="form-control">
-                                    <label className="label cursor-pointer">
-                                        <span className="label-text">More Complex</span>
-                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-red-500" value={5} />
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="h-16 mt-4">
-                                <div className="flex justify-start items-center">
-                                    <label className='' htmlFor="playTime">Preferred play time* &#40;in minutes&#41;: </label>
-                                    <input className='rounded-md pl-2 w-16 ml-5' type='number' id="playTime" name="playTime" value={formData.playTime} onChange={handleChange} />
-                                </div>
-                                <label className='mt-2 text-xs' htmlFor="numPlayers">*As shown on box.</label>
-                            </div>
                             {
 
-                                <button type="submit" className={` w-1/2  mx-auto btn btn-secondary mt-5
+                                gamesLoading ? <>
+                                    <p className="mx-auto">Loading</p>
+                                    <span className="loading loading-dots loading-sm mx-auto"></span>
+
+                                </> :
+                                    <>
+                                        <div className='flex flex-col h-16'>
+                                            <div className="flex justify-start items-center">
+                                                <label className='' htmlFor="numPlayers">Number of players:</label>
+                                                <input max={maxPlayerCount} className='rounded-md pl-2 w-16 ml-5' type="number" id="numPlayers" name="numPlayers" value={formData.numPlayers} onChange={handleChange} />
+                                            </div>
+                                            {maxPlayerCount ? <label className='mt-2 text-xs' htmlFor="numPlayers">*Max player count is currently {maxPlayerCount}.</label> : ""}
+                                        </div>
+
+                                        <label className='mt-5' htmlFor="complexity">What&rsquo;s your preferred maximum complexity?</label>
+                                        <div className="flex  justify-between h-16">
+                                            <div className="form-control">
+                                                <label className="label cursor-pointer">
+                                                    <span className="label-text">More Simple</span>
+                                                    <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-green-500" value={2} />
+                                                </label>
+                                            </div>
+                                            <div className="form-control">
+                                                <label className="label cursor-pointer">
+                                                    <span className="label-text">In the middle</span>
+                                                    <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-yellow-500" value={3} />
+                                                </label>
+                                            </div>
+                                            <div className="form-control">
+                                                <label className="label cursor-pointer">
+                                                    <span className="label-text">More Complex</span>
+                                                    <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-red-500" value={5} />
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="h-16 mt-4">
+                                            <div className="flex justify-start items-center">
+                                                <label className='' htmlFor="playTime">Preferred play time* &#40;in minutes&#41;: </label>
+                                                <input className='rounded-md pl-2 w-16 ml-5' type='number' id="playTime" name="playTime" value={formData.playTime} onChange={handleChange} />
+                                            </div>
+                                            <label className='mt-2 text-xs' htmlFor="numPlayers">*As shown on box.</label>
+                                        </div>
+
+
+                                        {
+
+                                            <button type="submit" className={` w-1/2  mx-auto btn btn-secondary mt-5
                                     ${boardGames.length === 0 && 'btn-disabled'}
                                     `}>MeepleMatch!</button>
 
+                                        }
+                                    </>
                             }
                             {
-                                boardGames.length === 0 && <label className="text-center pt-2">Your shelf is empty!</label>
+                                !gamesLoading && (boardGames.length === 0 && <label className="text-center pt-2">Your shelf is empty!</label>)
                             }
                         </form>
                     </div>

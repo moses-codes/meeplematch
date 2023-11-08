@@ -32,13 +32,15 @@ export default function Search() {
 
     const [boardGames, setBoardGames] = useState<{ id: number }[]>([])
 
-    api.boardGames.getUserGameIds.useQuery(undefined, {
+    const { data: games } = api.boardGames.getUserGameIds.useQuery(undefined, {
         onSuccess: (data) => {
             setBoardGames(data)
             console.log(data)
         },
 
     });
+
+    console.log(games)
 
     interface SearchResult {
         title: string;

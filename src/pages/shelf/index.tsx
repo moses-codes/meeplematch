@@ -3,6 +3,8 @@ import Head from "next/head";
 import Link from "next/link";
 import Layout from "~/components/layout/Layout";
 
+import Game from "~/components/game/Game";
+
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -29,7 +31,7 @@ interface Mechanic {
 
 export default function Home() {
 
-    const [boardGames, setBoardGames] = useState<BoardGame[]>([])
+
 
     const removeGame = api.boardGames.removeGameFromShelf.useMutation({
         onSuccess: (removedGame) => {
@@ -65,17 +67,29 @@ export default function Home() {
 
     }
 
-    api.boardGames.getUserGames.useQuery(undefined, {
+    const { isSuccess, data, error, isLoading } = api.boardGames.getUserGames.useQuery(undefined, {
         onSuccess: (data) => {
             // console.log(data)
             setBoardGames(data);
-            console.log('usergames are', data)
+            // console.log('usergames are', data)
         },
     });
 
-    async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    const [boardGames, setBoardGames] = useState<BoardGame[]>(isSuccess ? data : [])
+
+
+
+    // console.log(boardGames.length && 'loaded')
+
+
+
+    // console.log('the usergames are', userGames)
+    // gamesLoading ? console.log('loading') : console.log('games loaded', boardGames)
+
+    function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+        console.log('clicked')
         const deletedGameId = Number(e.currentTarget.value);
-        await removeGame.mutate({ id: deletedGameId });
+        removeGame.mutate({ id: deletedGameId });
     }
 
     // console.log('the users games are: ', { boardGames })
@@ -93,6 +107,9 @@ export default function Home() {
                 <main className=" flex min-h-screen flex-col items-center bg-slate-300">
                     <h1 className="text-5xl pt-10 pb-4">Library</h1>
                     <div className="">
+
+
+
                         {boardGames?.length ?
                             <div className="dropdown dropdown-hover  w-full flex justify-center">
                                 <label tabIndex={0} className="btn w-52">Sort By...</label>
@@ -103,17 +120,35 @@ export default function Home() {
                                     <li><button onClick={handleChangeSort} id="complexityDesc">Complexity &#40;desc.&#41;</button></li>
                                 </ul>
                             </div>
-                            : <h2 className="text-center text-2xl">Your shelf is empty! Why not <Link href='/search'><span className="text-blue-500 hover:underline">add some games?</span></Link></h2>
+                            :
+                            (isLoading) ? <span className=" block text-center mx-auto loading loading-dots loading-lg" /> :
+
+                                <h2 className="text-center text-2xl">Your shelf is empty! Why not <Link href='/search'><span className="text-blue-500 hover:underline">add some games?</span></Link></h2>
                         }
+
+                        {error && <p>Error fetching games!</p>}
 
 
                         <ul className="flex flex-wrap justify-around w-screen my-5  container mx-auto ">
 
-                            {boardGames?.map((game: BoardGame) => {
+                            {boardGames?.map(game => (
+                                <Game id={game.id}
+                                    key={game.id}
+                                    title={game.title}
+                                    image={game.image}
+                                    minPlayers={game.minPlayers} maxPlayers={game.maxPlayers}
+                                    playTime={game.playTime} complexity={game.complexity}
+                                    mechanics={game.mechanics}
+                                    handleClick={handleClick}
+                                    isBeingDeleted={removeGame.isLoading}
+                                />
+                            ))}
+
+                            {/* {boardGames?.map((game: BoardGame) => {
                                 return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center  mx-2" key={game.id}>
                                     <h2 className="text-2xl font-bold truncate truncate-ellipsis mb-4">{game.title}</h2>
 
-                                    <Image height={100} width={100} className='inline-block mx-auto mb-4 h-32 rounded-md' src={game.image ?? ''} alt={`Box art for ${game.title}`} />
+                                    <Image height={200} width={200} className='inline-block mx-auto mb-4 h-auto w-auto rounded-md' src={game.image ?? ''} alt={`Box art for ${game.title}`} />
                                     {game.minPlayers === game.maxPlayers ?
                                         game.minPlayers === 1 ? <p>1 player</p> : <p>{game.maxPlayers} players</p>
                                         :
@@ -128,13 +163,21 @@ export default function Home() {
                                             })}
                                         </ul>
                                     </details>
-                                    <button
-                                        onClick={handleClick}
-                                        className="btn btn-error w-1/2 mx-auto"
-                                        value={game.id}
-                                    >Delete</button>
-                                </li>
-                            })}
+                                    {
+                                        removeGame.isLoading ?
+                                            <>
+                                                <span className="loading loading-spinner text-error mx-auto"></span>
+                                            </>
+                                            :
+                                            <button
+                                                onClick={handleClick}
+                                                className="btn btn-error w-1/2 mx-auto"
+                                                value={game.id}
+                                            >Delete</button>
+
+                                    }
+                                </li> */}
+
 
                         </ul>
                     </div>

@@ -42,17 +42,19 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
         },
     }))
 
+    console.log(bgInfo.status)
+
     // const bgMechanics = api.boardGames.addMechanics.useMutation()
 
     function handleClick() {
         console.log('clicked')
         try {
-            (async function click() {
-                await addGame(id, title)!
-                    .then(data => bgInfo.mutate(data))
-                    .catch(err => console.error(err))
-                // bgInfo.mutate(boardGameInfo)
-            })()
+
+            addGame(id, title)!
+                .then(data => bgInfo.mutate(data))
+                .catch(err => console.error(err))
+            // bgInfo.mutate(boardGameInfo)
+
 
         } catch (error) {
             console.error(error)
@@ -63,17 +65,24 @@ const SearchResult = (props: { title: string; id: number; yearPublished: number;
     return (
         <li className="flex items-center justify-between py-2 px-4 border-2 border-slate-400 rounded-md my-3 mx-2" >
             {`${title} (${yearPublished})`}
-            <button
-                onClick={handleClick}
-                className={`btn-primary btn-xs rounded-md 
+            {bgInfo.status === "loading" ?
+                <>
+                    <span className="loading loading-spinner loading-xs text-primary mx-auto"></span>
+                </>
+                :
+                <button
+                    onClick={handleClick}
+                    className={`btn-primary btn-xs rounded-md 
                 ${showInLibrary && 'btn-disabled btn-neutral opacity-75'}
                 `}
-                id={`${id}`}
-            >
+                    id={`${id}`}
+                >
 
-                {showInLibrary ? "IN LIBRARY" : "ADD"}
 
-            </button>
+                    {showInLibrary ? "IN LIBRARY" : "ADD"}
+
+                </button>
+            }
         </li>
     )
 }
