@@ -117,10 +117,10 @@ export default function GameMatcher() {
                     <link rel="icon" href="/3d-meeple-svgrepo-com.svg" />
                 </Head>
                 <main className=" flex min-h-screen flex-col items-center pt-12 bg-slate-300 pb-36">
-                    <div className="border-2 border-black rounded-lg p-10 bg-blue-100">
+                    <div className="border-2 border-black rounded-xl p-10 bg-blue-100 mx-2">
                         <h1 className="text-3xl mb-12 text-center">Game Matcher</h1>
 
-                        <form onSubmit={handleSubmit} className='flex flex-col h-96 w-96'>
+                        <form onSubmit={handleSubmit} className='flex flex-col justify-around h-80 w-full lg:w-96'>
 
                             {
 
@@ -130,47 +130,49 @@ export default function GameMatcher() {
 
                                 </> :
                                     <>
-                                        <div className='flex flex-col h-16'>
-                                            <div className="flex justify-start items-center">
-                                                <label className='' htmlFor="numPlayers">Number of players:</label>
-                                                <input max={maxPlayerCount} className='rounded-md pl-2 w-16 ml-5' type="number" id="numPlayers" name="numPlayers" value={formData.numPlayers} onChange={handleChange} />
+                                        <div className='flex flex-col h-8'>
+                                            <div className="flex justify-between items-center">
+                                                <label className='text-sm md:text-xl' htmlFor="numPlayers"># of players:</label>
+                                                <input max={maxPlayerCount} className='rounded-md pl-2 w-1/2 ml-5 text-sm md:text-xl' type="number" id="numPlayers" name="numPlayers" value={formData.numPlayers} onChange={handleChange} />
                                             </div>
                                             {maxPlayerCount ? <label className='mt-2 text-xs' htmlFor="numPlayers">*Max player count is currently {maxPlayerCount}.</label> : ""}
                                         </div>
 
-                                        <label className='mt-5' htmlFor="complexity">What&rsquo;s your preferred maximum complexity?</label>
-                                        <div className="flex  justify-between h-16">
-                                            <div className="form-control">
-                                                <label className="label cursor-pointer">
-                                                    <span className="label-text">More Simple</span>
-                                                    <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-green-500" value={2} />
-                                                </label>
-                                            </div>
-                                            <div className="form-control">
-                                                <label className="label cursor-pointer">
-                                                    <span className="label-text">In the middle</span>
-                                                    <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-yellow-500" value={3} />
-                                                </label>
-                                            </div>
-                                            <div className="form-control">
-                                                <label className="label cursor-pointer">
-                                                    <span className="label-text">More Complex</span>
-                                                    <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-red-500" value={5} />
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="h-16 mt-4">
-                                            <div className="flex justify-start items-center">
-                                                <label className='' htmlFor="playTime">Preferred play time* &#40;in minutes&#41;: </label>
-                                                <input className='rounded-md pl-2 w-16 ml-5' type='number' id="playTime" name="playTime" value={formData.playTime} onChange={handleChange} />
-                                            </div>
-                                            <label className='mt-2 text-xs' htmlFor="numPlayers">*As shown on box.</label>
-                                        </div>
 
+                                        <div className="py-4 mt-6">
+                                            <div className="flex justify-between items-center">
+                                                <label className='text-sm md:text-xl' htmlFor="playTime">Play time &#40;min.&#41;: </label>
+                                                <input className='rounded-md pl-2 w-1/2 ml-5 text-sm md:text-xl' type='number' id="playTime" name="playTime" value={formData.playTime} onChange={handleChange} />
+                                            </div>
+                                        </div>
+                                        <div className="text-center">
+                                            <label className='text-center text-sm md:text-xl ' htmlFor="complexity">Maximum complexity</label>
+                                            <div className="flex  mt-2 justify-between h-16">
+                                                <div className="form-control">
+                                                    <label className="label cursor-pointer flex-col">
+                                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-green-500" value={2} />
+                                                        <span className="label-text text-xs text-center">More Simple</span>
+                                                    </label>
+                                                </div>
+                                                <div className="form-control">
+                                                    <label className="label cursor-pointer flex-col">
+                                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-yellow-500" value={3} />
+
+                                                        <span className="label-text text-xs text-center">In the middle</span>
+                                                    </label>
+                                                </div>
+                                                <div className="form-control">
+                                                    <label className="label cursor-pointer flex-col">
+                                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-red-500" value={5} />
+                                                        <span className="label-text text-xs text-center">More Complex</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         {
 
-                                            <button type="submit" className={` w-1/2  mx-auto btn btn-secondary mt-5
+                                            <button type="submit" className={` w-48  mx-auto btn btn-secondary mt-5
                                     ${boardGames.length === 0 && 'btn-disabled'}
                                     `}>MeepleMatch!</button>
 
@@ -200,8 +202,8 @@ export default function GameMatcher() {
                     <ul className="flex justify-center flex-wrap w-screen my-5">
 
                         {filteredGames?.map(game => {
-                            return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center" key={game.id}>
-                                <h2 className="text-2xl font-bold truncate truncate-ellipsis">{game.title}</h2>
+                            return <li className="card w-full md:w-96 bg-base-100 shadow-xl p-5 my-2 mx-1 text-center" key={game.id}>
+                                <h2 className=" text-lg lg:text-2xl font-bold truncate truncate-ellipsis">{game.title}</h2>
                                 <p>Players: {game.minPlayers} - {game.maxPlayers}</p>
                                 <Image height={100} width={100} className='inline-block mx-auto mb-5' src={game.image ?? ""} alt={`Box art for ${game.title}`} />
                                 <p>Play time: {game.playTime} min</p>

@@ -33,8 +33,9 @@ const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, 
 
             <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center  mx-2" key={id}>
                 <h2 className="text-2xl font-bold truncate truncate-ellipsis mb-4">{title}</h2>
-
-                <Image height={200} width={200} className='inline-block mx-auto mb-4 h-auto w-auto rounded-md' src={image ?? ''} alt={`Box art for ${title}`} />
+                <div className='h-32 relative'>
+                    <Image fill className='inline-block mx-auto mb-4 h-auto w-auto rounded-md ' src={image ?? ''} alt={`Box art for ${title}`} />
+                </div>
                 {minPlayers === maxPlayers ?
                     minPlayers === 1 ? <p>1 player</p> : <p>{maxPlayers} players</p>
                     :

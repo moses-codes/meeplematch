@@ -12,9 +12,9 @@ export default function Navbar() {
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
                     </label>
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-0 shadow bg-base-100 rounded-box w-52 font-semibold">
-                        <li><Link href='/shelf'>My Shelf</Link></li>
-                        <li><Link href='/gameMatcher'>Matcher</Link></li>
-                        <li><Link href='/search'>Add Game</Link></li>
+                        <li className='py-4 pl-2'><Link href='/shelf'>My Shelf</Link></li>
+                        <li className='py-4 pl-2'><Link href='/gameMatcher'>Matcher</Link></li>
+                        <li className='py-4 pl-2'><Link href='/search'>Add Game</Link></li>
                     </ul>
                 </div>
                 <Link href='/shelf'><div className="btn btn-ghost normal-case text-sm lg:text-xl">
