@@ -77,25 +77,19 @@ export default function Home() {
 
     const [boardGames, setBoardGames] = useState<BoardGame[]>(isSuccess ? data : [])
 
+    const [deletedGameId, setDeletedGameId] = useState<Number | null>(null)
 
-
-    // console.log(boardGames.length && 'loaded')
-
-
-
-    // console.log('the usergames are', userGames)
-    // gamesLoading ? console.log('loading') : console.log('games loaded', boardGames)
 
     function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
         // console.log('clicked')
-        const deletedGameId = Number(e.currentTarget.value);
-        // console.log(deletedGameId)
-        removeGame.mutate({ id: deletedGameId });
+        const currGameId = Number(e.currentTarget.value);
+        setDeletedGameId(prevId => prevId = currGameId)
+        removeGame.mutate({ id: currGameId }, {
+            onSuccess: () => {
+                setDeletedGameId(null)
+            }
+        });
     }
-
-    // console.log('the users games are: ', { boardGames })
-
-
 
     return (
         <>
@@ -141,7 +135,7 @@ export default function Home() {
                                     playTime={game.playTime} complexity={game.complexity}
                                     mechanics={game.mechanics}
                                     handleClick={handleClick}
-                                    isBeingDeleted={removeGame.isLoading}
+                                    isBeingDeleted={removeGame.isLoading && deletedGameId == game.id}
                                 />
                             ))}
 

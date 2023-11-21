@@ -18,6 +18,7 @@ const config = {
     defaultLocale: "en",
   },
   images: {
+    // formats: ['image/avif', 'image/webp'],
     domains: ["cdn.discordapp.com", "lh3.googleusercontent.com", 'cf.geekdo-images.com'],
   },
 };
