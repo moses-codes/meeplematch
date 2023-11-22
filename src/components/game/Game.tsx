@@ -16,6 +16,7 @@ interface BoardGameProps {
     mechanics: Mechanic[];
     handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
     isBeingDeleted: boolean;
+    isMatcher: boolean;
 
 }
 
@@ -24,13 +25,13 @@ interface Mechanic {
     mechanicText: string,
 }
 
-const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, mechanics, handleClick, isBeingDeleted }: BoardGameProps) => {
+const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, mechanics, handleClick, isBeingDeleted, isMatcher }: BoardGameProps) => {
 
 
     // console.log(handleClick)
     return (
         <>
-            <div className="group relative block h-64 sm:h-80 w-96 lg:h-96 my-2 ">
+            <div className="group relative block h-64 sm:h-80 w-96 lg:h-96 my-2 mx-2">
 
                 <span className="absolute inset-0 border-2 border-dashed border-slate-400 rounded-xl"></span>
 
@@ -97,20 +98,21 @@ const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, 
 
 
 
+                            {!isMatcher && <>
+                                {
+                                    isBeingDeleted ?
+                                        <>
+                                            <span className="loading loading-spinner text-error mx-auto"></span>
+                                        </>
+                                        :
+                                        <button
+                                            onClick={handleClick}
+                                            className="btn btn-error mx-auto w-32 mb-10"
+                                            value={id}
+                                        >Delete</button>
 
-                            {
-                                isBeingDeleted ?
-                                    <>
-                                        <span className="loading loading-spinner text-error mx-auto"></span>
-                                    </>
-                                    :
-                                    <button
-                                        onClick={handleClick}
-                                        className="btn btn-error mx-auto w-32 mb-10"
-                                        value={id}
-                                    >Delete</button>
-
-                            }
+                                }
+                            </>}
                         </div>
 
 

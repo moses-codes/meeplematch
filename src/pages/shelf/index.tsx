@@ -136,6 +136,7 @@ export default function Home() {
                                     mechanics={game.mechanics}
                                     handleClick={handleClick}
                                     isBeingDeleted={removeGame.isLoading && deletedGameId == game.id}
+                                    isMatcher={false}
                                 />
                             ))}
 
