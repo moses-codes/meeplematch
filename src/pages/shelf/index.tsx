@@ -73,17 +73,18 @@ export default function Home() {
             setBoardGames(data);
             // console.log('usergames are', data)
         },
+        refetchOnWindowFocus: false,
     });
 
     const [boardGames, setBoardGames] = useState<BoardGame[]>(isSuccess ? data : [])
 
-    const [deletedGameId, setDeletedGameId] = useState<Number | null>(null)
+    const [deletedGameId, setDeletedGameId] = useState<number | null>(null)
 
 
     function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
         // console.log('clicked')
         const currGameId = Number(e.currentTarget.value);
-        setDeletedGameId(prevId => prevId = currGameId)
+        setDeletedGameId(currGameId)
         removeGame.mutate({ id: currGameId }, {
             onSuccess: () => {
                 setDeletedGameId(null)
@@ -109,10 +110,10 @@ export default function Home() {
                             <div className="dropdown dropdown-hover  w-full flex justify-center ">
                                 <label tabIndex={0} className="btn w-52 bg-slate-800 text-white rounded-box">Sort By...</label>
                                 <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow rounded-box w-52 bg-slate-800 text-white ">
-                                    <li><button onClick={handleChangeSort} id="alphaAz">Alpha &#40;A-Z&#41;</button></li>
-                                    <li><button onClick={handleChangeSort} id="alphaZa">Alpha &#40;Z-A&#41;</button></li>
-                                    <li><button onClick={handleChangeSort} id="complexityAsc">Complexity &#40;asc.&#41;</button></li>
-                                    <li><button onClick={handleChangeSort} id="complexityDesc">Complexity &#40;desc.&#41;</button></li>
+                                    <li><button onClick={handleChangeSort} className="hover:bg-slate-500 text-white" id="alphaAz">Alpha &#40;A-Z&#41;</button></li>
+                                    <li><button onClick={handleChangeSort} className="hover:bg-slate-500 text-white" id="alphaZa">Alpha &#40;Z-A&#41;</button></li>
+                                    <li><button onClick={handleChangeSort} className="hover:bg-slate-500 text-white" id="complexityAsc">Complexity &#40;asc.&#41;</button></li>
+                                    <li><button onClick={handleChangeSort} className="hover:bg-slate-500 text-white" id="complexityDesc">Complexity &#40;desc.&#41;</button></li>
                                 </ul>
                             </div>
                             :

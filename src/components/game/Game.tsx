@@ -90,7 +90,7 @@ const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, 
                                     {
                                         mechanics?.map((m, i, arr) => {
                                             if (i === arr.length - 1) return <span>{m.mechanicText} </span>
-                                            return <span>{m.mechanicText}, </span>
+                                            return <span key={m.id}>{m.mechanicText}, </span>
                                         })}
                                 </p>
                                 }

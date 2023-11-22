@@ -4,7 +4,7 @@ import Head from "next/head";
 import React, { useState } from "react";
 import Layout from "~/components/layout/Layout";
 
-import Image from "next/image";
+// import Image from "next/image";
 
 import Game from "~/components/game/Game";
 
@@ -38,6 +38,7 @@ export default function GameMatcher() {
             setBoardGames(data)
             setMaxPlayerCount(findHighestPlayerCount(data, data.length)!)
         },
+        refetchOnWindowFocus: false,
     });
 
 
@@ -209,6 +210,7 @@ export default function GameMatcher() {
 
                         {filteredGames?.map(game => {
                             return <Game
+                                key={game.id}
                                 id={game.id}
                                 title={game.title}
                                 image={game.image}
