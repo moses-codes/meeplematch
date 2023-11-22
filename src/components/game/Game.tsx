@@ -30,88 +30,92 @@ const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, 
     // console.log(handleClick)
     return (
         <>
-            <div className="group relative block h-64 sm:h-80 w-96 lg:h-96 my-2">
+            <div className="group relative block h-64 sm:h-80 w-96 lg:h-96 my-2 ">
 
-                <span className="absolute inset-0 border-2 border-dashed border-black"></span>
+                <span className="absolute inset-0 border-2 border-dashed border-slate-400 rounded-xl"></span>
 
                 <div
-                    className="z-0 relative flex h-full transform items-end border-2 border-black bg-white transition-transform group-hover:-translate-x-2 group-hover:-translate-y-2"
+                    className="z-0 relative flex h-full transform items-end border-2 border-slate-400 bg-slate-800 transition-transform group-hover:-translate-x-2 group-hover:-translate-y-2 rounded-xl"
                 >
                     <div
                         className="p-4 !pt-0 transition-opacity group-hover:absolute group-hover:opacity-0 sm:p-6 lg:p-8 w-full justify-around"
                     >
 
-                        <div className='h-52 relative text-center border-1 border-black w-full rounded-2xl my-10'>
+                        <div className='h-52 relative text-center border-1 border-white w-full rounded-2xl my-10'>
                             <Image
                                 height={200}
                                 width={200}
                                 sizes=''
-                                className='inline-block mx-auto mb-4 w-auto rounded-md h-full'
+                                className='inline-block mx-auto mb-4 w-auto h-full rounded-sm'
                                 src={image ?? ''}
                                 alt={`Box art for ${title}`} />
                         </div>
 
 
-                        <p className="text-xl font-bold mb-4 w-full z-20 relative line-clamp-1 text-center">{title}</p>
+                        <p className="text-2xl font-semibold mb-4 w-full z-20 relative line-clamp-1 text-center">{title}</p>
                     </div>
 
                     <div
                         className="absolute w-full h-full opacity-0 transition-opacity 
                         group-hover:relative group-hover:opacity-100 
+                        overflow-scroll
                         "
                     >
+                        <div className='fixed h-full w-full overflow-hidden'>
+                            <Image
+                                sizes=''
+                                fill
+                                className='blur-xl opacity-30'
+                                src={image ?? ''}
+                                alt={`Box art for ${title}`}
+                                objectFit='cover'
+                            />
+                        </div>
 
-                        {
-                            <div className='flex justify-end top-4 right-4 absolute z-40'>
-                                {
-                                    isBeingDeleted ?
-                                        <>
-                                            <span className="loading loading-spinner text-error mx-auto absolute"></span>
-                                        </>
-                                        :
-                                        <button
-                                            onClick={handleClick}
-                                            className="absolute btn btn-error btn-circle btn-outline"
-                                            value={id}
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-
-                                        </button>
-                                }
-                            </div>
-
-                        }
-
-                        <div className='p-8 relative z-10 flex flex-col-reverse justify-between  h-full'>
+                        <div className='p-8 relative z-10   h-full'>
                             <h3 className="mb-4 text-xl font-bold sm:text-2xl">{title}</h3>
 
-                            <p className="mt-4 text-sm sm:text-base relative">
+                            <p className="mt-4 text-sm sm:text-base relative pb-10">
                                 {minPlayers === maxPlayers ?
                                     minPlayers === 1 ? <p>1 player</p> : <p>{maxPlayers} players</p>
                                     :
-                                    <p>Players: {minPlayers} - {maxPlayers}</p>}
-                                <p>Play time: {playTime} min</p>
-                                <p>Complexity: {(complexity).toPrecision(3)} / 5</p>
-                                <details className="dropdown mb-10 mt-5">
-                                    <summary className="m-1 btn">Mechanics</summary>
-                                    <ul className="p-2 relative shadow menu dropdown-content z-20 rounded-box w-64 mx-12 bg-blue-200">
-                                        {mechanics.map((m: Mechanic) => {
-                                            return <li key={m.id}>{m.mechanicText}</li>
+                                    <p className='my-2'><span className='font-semibold'>Players: </span>{minPlayers} - {maxPlayers}</p>}
+                                <p className='my-2'><span className='font-semibold'>Play time: </span>{playTime} min</p>
+                                <p className='my-2'><span className='font-semibold'>Complexity: </span>{(complexity).toPrecision(3)} / 5</p>
+
+
+
+                                {mechanics?.length && <p><span className='font-semibold'>Mechanics: </span>
+                                    {
+                                        mechanics?.map((m, i, arr) => {
+                                            if (i === arr.length - 1) return <span>{m.mechanicText} </span>
+                                            return <span>{m.mechanicText}, </span>
                                         })}
-                                    </ul>
-                                </details>
+                                </p>
+                                }
                             </p>
+
+
+
+
+                            {
+                                isBeingDeleted ?
+                                    <>
+                                        <span className="loading loading-spinner text-error mx-auto"></span>
+                                    </>
+                                    :
+                                    <button
+                                        onClick={handleClick}
+                                        className="btn btn-error mx-auto w-32 mb-10"
+                                        value={id}
+                                    >Delete</button>
+
+                            }
                         </div>
 
 
 
 
-                        <Image
-                            sizes=''
-                            fill
-                            className='inline-block mx-auto w-auto blur-xl opacity-30 fixed p-4'
-                            src={image ?? ''}
-                            alt={`Box art for ${title}`} />
                     </div>
                 </div>
             </div>
