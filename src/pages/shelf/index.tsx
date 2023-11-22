@@ -44,7 +44,7 @@ export default function Home() {
             }
             //toast notification
             notifyRemoved()
-        }
+        },
     });
 
     const handleChangeSort = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -74,6 +74,7 @@ export default function Home() {
             // console.log('usergames are', data)
         },
         refetchOnWindowFocus: false,
+        retry: false,
     });
 
     const [boardGames, setBoardGames] = useState<BoardGame[]>(isSuccess ? data : [])
@@ -92,6 +93,8 @@ export default function Home() {
         });
     }
 
+    if (error) console.log(error.message)
+
     return (
         <>
             <Layout>
@@ -103,8 +106,6 @@ export default function Home() {
                 <main className=" flex min-h-screen flex-col items-center bg-slate-800 text-white">
                     <h1 className="text-5xl pt-10 pb-4">Library</h1>
                     <div className="">
-
-
 
                         {boardGames?.length ?
                             <div className="dropdown dropdown-hover  w-full flex justify-center ">
@@ -122,7 +123,8 @@ export default function Home() {
                                 <h2 className="text-center text-2xl">Your shelf is empty! Why not <Link href='/search'><span className="text-blue-500 hover:underline">add some games?</span></Link></h2>
                         }
 
-                        {error && <p>Error fetching games!</p>}
+                        {error?.message !== "UNAUTHORIZED" && <p>Error fetching games!</p>}
+                        {error?.message === "UNAUTHORIZED" && <p>Log in to see your shelf!</p>}
 
 
                         <ul className="flex flex-wrap justify-around w-screen my-5  container mx-auto ">
@@ -140,40 +142,6 @@ export default function Home() {
                                     isMatcher={false}
                                 />
                             ))}
-
-                            {/* {boardGames?.map((game: BoardGame) => {
-                                return <li className="card w-96 bg-base-100 shadow-xl p-5 m-5 text-center  mx-2" key={game.id}>
-                                    <h2 className="text-2xl font-bold truncate truncate-ellipsis mb-4">{game.title}</h2>
-
-                                    <Image height={200} width={200} className='inline-block mx-auto mb-4 h-auto w-auto rounded-md' src={game.image ?? ''} alt={`Box art for ${game.title}`} />
-                                    {game.minPlayers === game.maxPlayers ?
-                                        game.minPlayers === 1 ? <p>1 player</p> : <p>{game.maxPlayers} players</p>
-                                        :
-                                        <p>Players: {game.minPlayers} - {game.maxPlayers}</p>}
-                                    <p>Play time: {game.playTime} min</p>
-                                    <p>Complexity: {(game.complexity).toPrecision(3)} / 5</p>
-                                    <details className="dropdown mb-10 mt-5">
-                                        <summary className="m-1 btn">Mechanics</summary>
-                                        <ul className="p-2 shadow menu dropdown-content z-[1] rounded-box w-64 mx-12 bg-blue-200">
-                                            {game.mechanics.map((m: Mechanic) => {
-                                                return <li key={m.id}>{m.mechanicText}</li>
-                                            })}
-                                        </ul>
-                                    </details>
-                                    {
-                                        removeGame.isLoading ?
-                                            <>
-                                                <span className="loading loading-spinner text-error mx-auto"></span>
-                                            </>
-                                            :
-                                            <button
-                                                onClick={handleClick}
-                                                className="btn btn-error w-1/2 mx-auto"
-                                                value={game.id}
-                                            >Delete</button>
-
-                                    }
-                                </li> */}
 
 
                         </ul>

@@ -1,4 +1,4 @@
-// import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 // import Link from "next/link";
 import React, { useState } from "react";
@@ -33,7 +33,9 @@ interface Mechanic {
 }
 
 export default function GameMatcher() {
-    const { data: userGames, isLoading: gamesLoading, isSuccess } = api.boardGames.getUserGames.useQuery(undefined, {
+    const { data: sessionData } = useSession();
+
+    const { data: userGames, isLoading: gamesLoading, isSuccess, isError } = api.boardGames.getUserGames.useQuery(undefined, {
         onSuccess: (data) => {
             setBoardGames(data)
             setMaxPlayerCount(findHighestPlayerCount(data, data.length)!)
