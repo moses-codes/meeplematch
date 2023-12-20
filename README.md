@@ -1,28 +1,24 @@
-# Create T3 App
+# MeepleMatch
+MeepleMatch is a game that lets board game nerds decide, once and for all, what to play.
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+**Link to project:** [Try it for yourself!](https://meeplematch-moses-codes.vercel.app/)
 
-## What's next? How do I make an app with this?
+![screenshot of meeplematch]([http://placecorgi.com/1200/650](https://i.ibb.co/xmg0P5h/Screen-Shot-2023-12-08-at-2-26-40-PM.png))
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## How It's Made:
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+**Tech used:** HTML, CSS, JavaScript, Next.js, Prisma, tRPC, 
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+Using the T3 stack, I was able to get a sense of how modern web development has been streamlined. REST APIs are taken over by tRPC, which offers a simple interface for querying databases (here with Prisma), as well as a simple client API for making changes to the front end. Next.js is a full-stack framework that utilizes server side generation to speed up performance and optimize SEO. 
 
-## Learn More
+## Optimizations
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+For the future, I would like to implement the ability to view friends' board game libraries, as well as record play sessions for board games. 
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Lessons Learned:
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+The T3 stack is useful for quickly generating a full-stack app by abstracting many aspects of full stack development. Prisma in particular translates SQL databases to a more JavaScript-friendly syntax (like MongoDB), and may suffer in larger-scale deployments.
 
-## How do I deploy this?
+No matter how modern a stack touts itself to be, there will always a learning curve. A stack like T3 seeks to streamline processes that are posed by other stacks (hence the use of tRPC). While the end result is fairly intuitive, the time it took to familiarize myself was a tradeoff. 
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+I enjoy the developer experience provided by tRPC. The navigability between server and client with a simple command-click is extremely useful and satisfying.
