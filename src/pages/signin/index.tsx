@@ -34,7 +34,6 @@ interface Provider {
 
 export default function SignIn({ providers }: { providers: CustomPageProps }) {
 
-    console.log(providers)
     return (
         <div className="h-screen w-screen bg-gradient-to-b from-blue-300 to-blue-700 flex items-center justify-center">
 
