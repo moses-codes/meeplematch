@@ -141,7 +141,7 @@ export const boardGamesRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
 
-            console.log('\n\n\n***//', input.id)
+            // console.log('\n\n\n***//', input.id)
 
             const disconnectGame = await ctx.db.game.update({
 

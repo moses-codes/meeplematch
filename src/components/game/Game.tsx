@@ -31,7 +31,7 @@ const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, 
     // console.log(handleClick)
     return (
         <>
-            <div className="group relative block h-64 sm:h-80 w-96 lg:h-96 my-2 mx-2">
+            <div className="group relative block  w-96 h-96 my-2 mx-2">
 
                 <span className="absolute inset-0 border-2 border-dashed border-slate-400 rounded-xl"></span>
 
@@ -44,8 +44,8 @@ const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, 
 
                         <div className='h-52 relative text-center border-1 border-white w-full rounded-2xl my-10'>
                             <Image
-                                height={200}
-                                width={200}
+                                height={300}
+                                width={300}
                                 sizes=''
                                 className='inline-block mx-auto mb-4 w-auto h-full rounded-sm'
                                 src={image ?? ''}
@@ -64,19 +64,18 @@ const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, 
                     >
                         <div className='fixed h-full w-full overflow-hidden'>
                             <Image
-                                sizes=''
+                                sizes='400px'
                                 fill
                                 className='blur-xl opacity-30'
                                 src={image ?? ''}
                                 alt={`Box art for ${title}`}
-                                objectFit='cover'
                             />
                         </div>
 
                         <div className='p-8 relative z-10   h-full'>
                             <h3 className="mb-4 text-xl font-bold sm:text-2xl">{title}</h3>
 
-                            <p className="mt-4 text-sm sm:text-base relative pb-10">
+                            <div className="mt-4 text-sm sm:text-base relative pb-10">
                                 {minPlayers === maxPlayers ?
                                     minPlayers === 1 ? <p>1 player</p> : <p>{maxPlayers} players</p>
                                     :
@@ -89,12 +88,12 @@ const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, 
                                 {mechanics?.length && <p><span className='font-semibold'>Mechanics: </span>
                                     {
                                         mechanics?.map((m, i, arr) => {
-                                            if (i === arr.length - 1) return <span>{m.mechanicText} </span>
+                                            if (i === arr.length - 1) return <span key={m.id}>{m.mechanicText} </span>
                                             return <span key={m.id}>{m.mechanicText}, </span>
                                         })}
                                 </p>
                                 }
-                            </p>
+                            </div>
 
 
 

@@ -10,6 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { useState } from "react"
 
+import { QueryCache } from "@tanstack/react-query";
+
 import { api } from "~/utils/api";
 // import Image from "next/image";
 
@@ -74,6 +76,7 @@ export default function Home() {
             // console.log('usergames are', data)
         },
         refetchOnWindowFocus: false,
+        refetchOnMount: true,
         retry: false,
     });
 
@@ -93,9 +96,8 @@ export default function Home() {
         });
     }
 
-    if (error) console.log(error.message)
-
     return (
+
         <>
             <Layout>
                 <Head>
@@ -110,11 +112,11 @@ export default function Home() {
                         {boardGames?.length ?
                             <div className="dropdown dropdown-hover  w-full flex justify-center ">
                                 <label tabIndex={0} className="btn w-52 bg-slate-800 text-white rounded-box">Sort By...</label>
-                                <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow rounded-box w-52 bg-slate-800 text-white ">
-                                    <li><button onClick={handleChangeSort} className="hover:bg-slate-500 text-white" id="alphaAz">Alpha &#40;A-Z&#41;</button></li>
-                                    <li><button onClick={handleChangeSort} className="hover:bg-slate-500 text-white" id="alphaZa">Alpha &#40;Z-A&#41;</button></li>
-                                    <li><button onClick={handleChangeSort} className="hover:bg-slate-500 text-white" id="complexityAsc">Complexity &#40;asc.&#41;</button></li>
-                                    <li><button onClick={handleChangeSort} className="hover:bg-slate-500 text-white" id="complexityDesc">Complexity &#40;desc.&#41;</button></li>
+                                <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow rounded-box w-52 bg-slate-200 text-black ">
+                                    <li><button onClick={handleChangeSort} className="hover:bg-slate-500 bg-white-800" id="alphaAz">Alpha &#40;A-Z&#41;</button></li>
+                                    <li><button onClick={handleChangeSort} className="hover:bg-slate-500 bg-white-800" id="alphaZa">Alpha &#40;Z-A&#41;</button></li>
+                                    <li><button onClick={handleChangeSort} className="hover:bg-slate-500 bg-white-800" id="complexityAsc">Complexity &#40;asc.&#41;</button></li>
+                                    <li><button onClick={handleChangeSort} className="hover:bg-slate-500 bg-white-800" id="complexityDesc">Complexity &#40;desc.&#41;</button></li>
                                 </ul>
                             </div>
                             :
@@ -123,8 +125,8 @@ export default function Home() {
                                 <h2 className="text-center text-2xl">Your shelf is empty! Why not <Link href='/search'><span className="text-blue-500 hover:underline">add some games?</span></Link></h2>
                         }
 
-                        {error?.message !== "UNAUTHORIZED" && <p>Error fetching games!</p>}
-                        {error?.message === "UNAUTHORIZED" && <p>Log in to see your shelf!</p>}
+                        {error && error?.message !== "UNAUTHORIZED" && <p className="text-center">Error fetching games!</p>}
+                        {error?.message === "UNAUTHORIZED" && <p className="text-center">Log in to see your shelf!</p>}
 
 
                         <ul className="flex flex-wrap justify-around w-screen my-5  container mx-auto ">

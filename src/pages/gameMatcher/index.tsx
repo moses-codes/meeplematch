@@ -41,16 +41,20 @@ export default function GameMatcher() {
             setMaxPlayerCount(findHighestPlayerCount(data, data.length)!)
         },
         refetchOnWindowFocus: false,
+        retry: 0,
     });
+
+
 
 
     const [filteredGames, setFilteredGames] = useState<BoardGame[]>([])
 
     const [maxPlayerCount, setMaxPlayerCount] = useState<number>(0)
 
+
     const [boardGames, setBoardGames] = useState<BoardGame[]>(isSuccess ? userGames : [])
 
-    console.log(maxPlayerCount, userGames)
+    // console.log(maxPlayerCount, userGames)
 
     const [formData, setFormData] = useState<FormData>({
         numPlayers: 3, // Initialize with default values
@@ -58,10 +62,9 @@ export default function GameMatcher() {
         playTime: 120,
     });
 
-    // Your handleChange function (assuming it's something like this)
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
-        console.log(name, value)
+        // console.log(name, value)
         setFormData({
             ...formData,
             [name]: value,
@@ -71,7 +74,7 @@ export default function GameMatcher() {
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
         const { name, value } = event.target;
-        console.log(name, value)
+        // console.log(name, value)
         setFormData({
             ...formData,
             [name]: value,
@@ -101,7 +104,7 @@ export default function GameMatcher() {
     // Your handleSubmit function
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        console.log(formData)
+        // console.log(formData)
 
         const result = boardGames.filter(game => {
             return filterComplexity(game.complexity, formData.complexity) && filterNumPlayers(game.minPlayers, game.maxPlayers, formData.numPlayers) && filterPlayTime(game.playTime, formData.playTime)
@@ -110,7 +113,7 @@ export default function GameMatcher() {
 
         setFilteredGames(result)
 
-        console.log(result)
+        // console.log(result)
     };
 
     function handleClick() {
@@ -129,7 +132,7 @@ export default function GameMatcher() {
                     <div className="border-2 border-slate-300 rounded-xl p-10 bg-slate-800 mx-2">
                         <h1 className="text-3xl mb-12 text-center">Game Matcher</h1>
 
-                        <form onSubmit={handleSubmit} className='flex flex-col justify-around h-80 w-full lg:w-96'>
+                        <form onSubmit={handleSubmit} className='flex flex-col justify-around h-80 w-full lg:w-96 '>
 
                             {
 
@@ -159,21 +162,21 @@ export default function GameMatcher() {
                                             <div className="flex  mt-2 justify-between h-16">
                                                 <div className="form-control">
                                                     <label className="label cursor-pointer flex-col">
-                                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-green-500" value={2} />
-                                                        <span className="label-text text-xs text-center text-white">More Simple</span>
+                                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="border-white radio radio-sm checked:bg-green-500" value={2} />
+                                                        <span className="label-text text-xs text-center text-white mt-2">More Simple</span>
                                                     </label>
                                                 </div>
                                                 <div className="form-control">
                                                     <label className="label cursor-pointer flex-col">
-                                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-yellow-500 text-white" value={3} />
+                                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="border-white  radio radio-sm checked:bg-yellow-500 text-white" value={3} />
 
-                                                        <span className="label-text text-xs text-center text-white">In the middle</span>
+                                                        <span className="label-text text-xs text-center text-white mt-2">In the middle</span>
                                                     </label>
                                                 </div>
                                                 <div className="form-control">
                                                     <label className="label cursor-pointer flex-col">
-                                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="radio radio-sm checked:bg-red-500" value={5} />
-                                                        <span className="label-text text-xs text-center text-white">More Complex</span>
+                                                        <input onChange={handleRadioChange} type="radio" name="complexity" className="border-white radio radio-sm checked:bg-red-500" value={5} />
+                                                        <span className="label-text text-xs text-center text-white mt-2">More Complex</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -260,6 +263,9 @@ function filterNumPlayers(gameMinPlayers: number, gameMaxPlayers: number, input:
 }
 
 function filterPlayTime(gamePlayTime: number, input: number) {
+    if (gamePlayTime === '0') {
+        console.log('zero')
+    };
     return gamePlayTime <= input
 }
 
