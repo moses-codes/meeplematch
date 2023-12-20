@@ -7,7 +7,7 @@ MeepleMatch is a game that lets board game nerds decide, once and for all, what 
 
 ## How It's Made:
 
-**Tech used:** HTML, CSS, JavaScript, Next.js, Prisma, tRPC, 
+**Tech used:** HTML, CSS, JavaScript, Next.js, Prisma, tRPC, TailwindCSS
 
 Using the T3 stack, I was able to get a sense of how modern web development has been streamlined. REST APIs are taken over by tRPC, which offers a simple interface for querying databases (here with Prisma), as well as a simple client API for making changes to the front end. Next.js is a full-stack framework that utilizes server side generation to speed up performance and optimize SEO. 
 
