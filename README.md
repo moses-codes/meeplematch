@@ -3,7 +3,7 @@ MeepleMatch is a game that lets board game nerds decide, once and for all, what 
 
 **Link to project:** [Try it for yourself!](https://meeplematch-moses-codes.vercel.app/)
 
-![screenshot of meeplematch]([http://placecorgi.com/1200/650](https://i.ibb.co/xmg0P5h/Screen-Shot-2023-12-08-at-2-26-40-PM.png))
+![screenshot of meeplematch](https://i.ibb.co/xmg0P5h/Screen-Shot-2023-12-08-at-2-26-40-PM.png)
 
 ## How It's Made:
 
