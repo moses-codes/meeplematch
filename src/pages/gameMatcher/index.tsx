@@ -263,7 +263,7 @@ function filterNumPlayers(gameMinPlayers: number, gameMaxPlayers: number, input:
 }
 
 function filterPlayTime(gamePlayTime: number, input: number) {
-    if (gamePlayTime === '0') {
+    if (Number(gamePlayTime) === 0) {
         console.log('zero')
     };
     return gamePlayTime <= input
