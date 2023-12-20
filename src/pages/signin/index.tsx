@@ -34,18 +34,19 @@ interface Provider {
 
 export default function SignIn({ providers }: { providers: CustomPageProps }) {
 
-    console.log(providers)
     return (
         <div className="h-screen w-screen bg-gradient-to-b from-blue-300 to-blue-700 flex items-center justify-center">
 
             <div className="card w-96 bg-base-100 shadow-xl h-96 py-5 px-5">
-                <Image alt='meeplematch logo' height={100} width={100} className='h-1/4' src='/3d-meeple-svgrepo-com.svg' />
+                <div className="mx-auto">
+                    <Image alt='meeplematch logo' height={100} width={100} className='h-full' src='/3d-meeple-svgrepo-com.svg' />
+                </div>
                 <div className='cardBody flex flex-col items-center justify-around h-3/4'>
                     <h1 className="text-2xl text-center ">Welcome to Meeplematch!</h1>
                     {
                         Object.values(providers).map((provider: Provider) => (
                             <button
-                                className="btn btn-neutral rounded-xl w-60 flex "
+                                className="btn btn-neutral rounded-xl w-60 block "
                                 key={provider.id}
                                 onClick={() => {
                                     void signIn(provider.id, {
@@ -53,12 +54,14 @@ export default function SignIn({ providers }: { providers: CustomPageProps }) {
                                     });
                                 }}
                             >
-                                <Image alt={`${provider.name} logo`} height={50} width={50} src={provider.id === 'discord' ? '/discordsvg.svg' : '/googlesvg.svg'} className="h-5 inline" />
-                                Sign in with {provider.name}
+                                <p className="flex items-center">
+                                    <Image alt={`${provider.name} logo`} height={25} width={25} src={provider.id === 'discord' ? '/discordsvg.svg' : '/googlesvg.svg'} className="h-5 mr-3 inline" />
+                                    Sign in with {provider.name}
+                                </p>
                             </button>
                         ))
                     }
-                    <p className="text-xl font-semibold"><Link href={`/`}>	&#60; Back </Link></p>
+                    <p className="text-xl font-semibold hover:underline"><Link href={`/`}>	&#60; Back </Link></p>
                 </div>
             </div>
         </div>

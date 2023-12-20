@@ -5,20 +5,20 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Navbar() {
     return (
-        <div className="navbar bg-base-200">
+        <div className="navbar bg-slate-600 text-base-100">
             <div className="navbar-start">
                 <div className="dropdown">
                     <label tabIndex={0} className="btn btn-ghost lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
                     </label>
-                    <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-0 shadow bg-base-100 rounded-box w-52 font-semibold">
-                        <li><Link href='/shelf'>My Shelf</Link></li>
-                        <li><Link href='/gameMatcher'>Matcher</Link></li>
-                        <li><Link href='/search'>Add Game</Link></li>
+                    <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-0 shadow bg-slate-700 text-slate-200 rounded-box w-52 font-semibold">
+                        <li className='py-4 pl-2'><Link href='/shelf'>My Shelf</Link></li>
+                        <li className='py-4 pl-2'><Link href='/gameMatcher'>Matcher</Link></li>
+                        <li className='py-4 pl-2'><Link href='/search'>Add Game</Link></li>
                     </ul>
                 </div>
                 <Link href='/shelf'><div className="btn btn-ghost normal-case text-sm lg:text-xl">
-                    <Image width={100} height={100} alt='meeplematch logo' className="h-10" src="/3d-meeple-svgrepo-com.svg" /><span className="hidden md:inline">
+                    <Image width={50} height={50} alt='meeplematch logo' sizes='50px' src="/3d-meeple-svgrepo-com.svg" /><span className="hidden md:inline">
                         MeepleMatch</span></div></Link>
             </div>
             <div className="navbar-center hidden lg:flex">

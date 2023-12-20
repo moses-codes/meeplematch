@@ -120,7 +120,7 @@ async function addGame(id: number, title: string) {
             const minPlayers = Number(xmlDocument.querySelector('minplayers')?.getAttribute('value'))
             const maxPlayers = Number(xmlDocument.querySelector('maxplayers')?.getAttribute('value'))
             const complexity = Number(xmlDocument.querySelector('averageweight')?.getAttribute('value'))
-            const thumbnailElement = xmlDocument.querySelector('thumbnail')?.textContent ?? '/meeple-group.svg'
+            const thumbnailElement = xmlDocument.querySelector('image')?.textContent ?? '/meeple-group.svg'
             const image: string = thumbnailElement
 
             const links = xmlDocument.querySelectorAll('link[type="boardgamemechanic"]')

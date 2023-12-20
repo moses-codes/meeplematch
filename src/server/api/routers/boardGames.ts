@@ -141,7 +141,7 @@ export const boardGamesRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
 
-            console.log('\n\n\n***//', input.id)
+            // console.log('\n\n\n***//', input.id)
 
             const disconnectGame = await ctx.db.game.update({
 
@@ -160,7 +160,22 @@ export const boardGamesRouter = createTRPCRouter({
 
             console.log(disconnectGame)
             return disconnectGame
-        })
+        }),
 
+    updateGameImages: publicProcedure
+        .input(z.object({
+            id: z.number(),
+            imageUrl: z.string(),
+        }))
+        .mutation(async ({ ctx, input }) => {
+            await ctx.db.game.update({
+                where: {
+                    id: input.id,
+                },
+                data: {
+                    image: input.imageUrl,
+                },
+            });
+        })
 
 });
