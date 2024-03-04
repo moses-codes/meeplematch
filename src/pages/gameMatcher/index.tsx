@@ -101,7 +101,6 @@ export default function GameMatcher() {
         }
     }
 
-    // Your handleSubmit function
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         // console.log(formData)
@@ -228,22 +227,6 @@ export default function GameMatcher() {
                                 isBeingDeleted={false}
                                 isMatcher={true}
                             />
-
-                            // return <li className="card w-full md:w-96 bg-base-100 shadow-xl p-5 my-2 mx-1 text-center" key={game.id}>
-                            //     <h2 className=" text-lg lg:text-2xl font-bold truncate truncate-ellipsis">{game.title}</h2>
-                            //     <p>Players: {game.minPlayers} - {game.maxPlayers}</p>
-                            //     <Image height={100} width={100} className='inline-block mx-auto mb-5' src={game.image ?? ""} alt={`Box art for ${game.title}`} />
-                            //     <p>Play time: {game.playTime} min</p>
-                            //     <p>Complexity: {(game.complexity).toPrecision(3)} / 5</p>
-                            //     <details className="dropdown mb-5">
-                            //         <summary className="m-1 btn">Mechanics</summary>
-                            //         <ul className="p-2 shadow menu dropdown-content z-[1] rounded-box w-64 mx-12 bg-blue-200">
-                            //             {game.mechanics.map((m: Mechanic) => {
-                            //                 return <li key={m.id}>{m.mechanicText}</li>
-                            //             })}
-                            //         </ul>
-                            //     </details>
-                            // </li>
                         })}
 
                     </ul>
