@@ -1,5 +1,4 @@
 import { exampleRouter } from "~/server/api/routers/example";
-import { learningRouter } from "./routers/learning";
 import { createTRPCRouter } from "~/server/api/trpc";
 import { boardGamesRouter } from "~/server/api/routers/boardGames"
 
