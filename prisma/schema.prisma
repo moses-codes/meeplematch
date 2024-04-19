@@ -1,145 +1,102 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider     = "mysql"
-    url          = env("DATABASE_URL")
-    relationMode = "prisma"
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Example {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        Int      @id(map: "idx_32775_PRIMARY") @default(autoincrement())
+  name      String   @db.VarChar(191)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
 
-    @@index([name])
+  @@index([name], map: "idx_32775_Example_name_idx")
 }
 
-// Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? @db.Text
-    access_token      String? @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id(map: "idx_32769_PRIMARY") @default(cuid()) @db.VarChar(191)
+  userId            String  @db.VarChar(191)
+  type              String  @db.VarChar(191)
+  provider          String  @db.VarChar(191)
+  providerAccountId String  @db.VarChar(191)
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String? @db.VarChar(191)
+  scope             String? @db.VarChar(191)
+  id_token          String?
+  session_state     String? @db.VarChar(191)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@unique([provider, providerAccountId])
-    @@index([userId])
+  @@unique([provider, providerAccountId], map: "idx_32769_Account_provider_providerAccountId_key")
+  @@index([userId], map: "idx_32769_Account_userId_idx")
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String   @id(map: "idx_32788_PRIMARY") @default(cuid()) @db.VarChar(191)
+  sessionToken String   @unique(map: "idx_32788_Session_sessionToken_key") @db.VarChar(191)
+  userId       String   @db.VarChar(191)
+  expires      DateTime @db.Timestamptz(6)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@index([userId])
+  @@index([userId], map: "idx_32788_Session_userId_idx")
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+  identifier String   @db.VarChar(191)
+  token      String   @unique(map: "idx_32798_VerificationToken_token_key") @db.VarChar(191)
+  expires    DateTime @db.Timestamptz(6)
 
-    @@unique([identifier, token])
+  @@unique([identifier, token], map: "idx_32798_VerificationToken_identifier_token_key")
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    games         Game[]
-    // gameSessions  GameSession[]
+  id            String    @id(map: "idx_32793_PRIMARY") @default(cuid()) @db.VarChar(191)
+  name          String?   @db.VarChar(191)
+  email         String?   @unique(map: "idx_32793_User_email_key") @db.VarChar(191)
+  emailVerified DateTime? @db.Timestamptz(6)
+  image         String?   @db.VarChar(191)
+  accounts      Account[]
+  sessions      Session[]
+  games         Game[]
 }
 
 model Game {
-    id         Int        @id @unique
-    title      String
-    image      String?
-    playTime   Int
-    maxPlayers Int
-    minPlayers Int
-    complexity Float
-    users      User[]
-    mechanics  Mechanic[]
-    // gameSessions GameSession[]
+  id         Int        @id(map: "idx_32780_PRIMARY") @unique(map: "idx_32780_Game_id_key")
+  image      String?    @db.VarChar(191)
+  playTime   Int
+  maxPlayers Int
+  minPlayers Int
+  complexity Float
+  title      String     @db.VarChar(191)
+  users      User[]
+  mechanics  Mechanic[]
 }
 
-//many mechanics may be tied to many games.
 model Mechanic {
-    id           Int    @id @unique @default(autoincrement())
-    mechanicText String
-    games        Game[]
+  id           Int    @id(map: "idx_32784_PRIMARY") @unique(map: "idx_32784_Mechanic_id_key") @default(autoincrement())
+  mechanicText String @db.VarChar(191)
+  games        Game[]
 }
 
-//one session to one game
-//one game to many sessions
-// model GameSession {
-//     id          String   @id @unique
-//     comment     String?
-//     whoWasThere String?
-//     duration    Int?
-//     gameId      String
-//     userId      String
-//     game        Game     @relation(fields: [gameId], references: [id])
-//     user        User     @relation(fields: [userId], references: [id])
-//     createdAt   DateTime @default(now())
+model GameToMechanic {
+  A Int
+  B Int
 
-//     @@index([gameId])
-//     @@index([userId])
-// }
+  @@unique([A, B], map: "idx_32801__GameToMechanic_AB_unique")
+  @@index([B], map: "idx_32801__GameToMechanic_B_index")
+  @@map("_GameToMechanic")
+}
 
-// model User {
-//   id      Int      @id @default(autoincrement())
-//   email   String   @unique
-//   name    String?
-//   role    Role     @default(USER)
-//   posts   Post[]
-//   profile Profile?
-// }
+model GameToUser {
+  A Int
+  B String @db.VarChar(191)
 
-//the user references the Post schema. 
-
-// model Profile {
-//   id     Int    @id @default(autoincrement())
-//   bio    String
-//   user   User   @relation(fields: [userId], references: [id])
-//   userId Int    @unique
-// }
-
-//the Profile schema references the USer schema. 
-
-// model Post {
-//   id         Int        @id @default(autoincrement())
-//   createdAt  DateTime   @default(now())
-//   updatedAt  DateTime   @updatedAt
-//   title      String
-//   published  Boolean    @default(false)
-//   author     User       @relation(fields: [authorId], references: [id])
-//   authorId   Int
-//   categories Category[]
-// }
-
-// model Category {
-//   id    Int    @id @default(autoincrement())
-//   name  String
-//   posts Post[]
-// }
+  @@unique([A, B], map: "idx_32804__GameToUser_AB_unique")
+  @@index([B], map: "idx_32804__GameToUser_B_index")
+  @@map("_GameToUser")
+}
