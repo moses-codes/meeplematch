@@ -9,17 +9,17 @@ import Link from "next/link";
 
 interface CustomPageProps { // <--- your custom page props
     discord: {
-        callbackUrl: "http://localhost:3000/api/auth/callback/discord",
+        callbackUrl: "/api/auth/callback/discord",
         id: "discord",
         name: "Discord",
-        signinUrl: "http://localhost:3000/api/auth/signin/discord",
+        signinUrl: "/api/auth/signin/discord",
         type: "oauth"
     },
     google: {
-        callbackUrl: "http://localhost:3000/api/auth/callback/google",
+        callbackUrl: "/api/auth/callback/google",
         id: "google",
         name: "Google",
-        signinUrl: "http://localhost:3000/api/auth/signin/google",
+        signinUrl: "/api/auth/signin/google",
         type: "oauth"
     }
 }
