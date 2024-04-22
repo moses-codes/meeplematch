@@ -61,7 +61,6 @@ export default function SignIn({ providers }: { providers: CustomPageProps }) {
                                     Sign in with {provider.name}
                                 </p>
                             </button>
-
                         ))
                     }
                     <p className="text-xl font-semibold hover:underline"><Link href={`/`}>	&#60; Back </Link></p>
