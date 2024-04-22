@@ -53,7 +53,7 @@ export default function SignIn({ providers }: { providers: CustomPageProps }) {
                                     key={provider.id}
                                     onClick={() => {
                                         void signIn(provider.id, {
-                                            callbackUrl: provider.callbackUrl,
+                                            callbackUrl: baseUrl + provider.callbackUrl,
                                         });
                                     }}
                                 >
