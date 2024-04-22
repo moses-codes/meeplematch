@@ -7,6 +7,8 @@ import Image from "next/image";
 import React from 'react'
 import Link from "next/link";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+
 interface CustomPageProps { // <--- your custom page props
     discord: {
         callbackUrl: "/api/auth/callback/discord",
@@ -36,7 +38,7 @@ export default function SignIn({ providers }: { providers: CustomPageProps }) {
 
     return (
         <div className="h-screen w-screen bg-gradient-to-b from-blue-300 to-blue-700 flex items-center justify-center">
-
+            <h1>{baseUrl}</h1>
             <div className="card w-96 bg-base-100 shadow-xl h-96 py-5 px-5">
                 <div className="mx-auto">
                     <Image alt='meeplematch logo' height={100} width={100} className='h-full' src='/3d-meeple-svgrepo-com.svg' />
@@ -50,7 +52,7 @@ export default function SignIn({ providers }: { providers: CustomPageProps }) {
                                 key={provider.id}
                                 onClick={() => {
                                     void signIn(provider.id, {
-                                        callbackUrl: `${provider.callbackUrl}`,
+                                        callbackUrl: "localhost:3000/api/auth/callback/discord",
                                     });
                                 }}
                             >
