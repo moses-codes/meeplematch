@@ -1,7 +1,7 @@
 # MeepleMatch
 MeepleMatch is a full stack app that lets board game nerds decide, once and for all, what to play. Pairs well with the Discord bot scheduler [Meeplebot](https://github.com/moses-codes/meeplebot).
 
-**Link to project:** [Try it for yourself!](https://meeplematch-moses-codes.vercel.app/)
+**Link to project:** [Try it for yourself!](https://meeple-match.vercel.app/)
 
 ![screenshot of meeplematch](https://i.ibb.co/xmg0P5h/Screen-Shot-2023-12-08-at-2-26-40-PM.png)
 
