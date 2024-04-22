@@ -19,7 +19,7 @@ export default function Home() {
         <main className=" flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-300 to-blue-700">
 
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-            <div className='flex items-center flex-wrap'>
+            <div className='flex items-center flex-wrap justify-center'>
               <Image width={100} height={100} alt='MeepleMatch logo' className="h-20 lg:h-32 mr-5 block" src="/3d-meeple-svgrepo-com.svg" />
               <div>
                 <h1 className="text-3xl lg:text-left text-center lg:text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
