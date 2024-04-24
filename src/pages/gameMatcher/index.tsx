@@ -253,7 +253,7 @@ function filterPlayTime(gamePlayTime: number, input: number) {
 }
 
 function findHighestPlayerCount(boardGames: BoardGame[], length: number) {
-    return boardGames.sort((a, b) => a.maxPlayers - b.maxPlayers)[length - 1]?.maxPlayers
+    return Math.max(...boardGames.map(game => game.maxPlayers));
 }
 
 // function isMindMGMT(id: number) {

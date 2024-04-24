@@ -77,7 +77,7 @@ const Game = ({ id, title, image, minPlayers, maxPlayers, playTime, complexity, 
 
                             <div className="mt-4 text-sm sm:text-base relative pb-10">
                                 {minPlayers === maxPlayers ?
-                                    minPlayers === 1 ? <p>1 player</p> : <p>{maxPlayers} players</p>
+                                    <p>Players: {maxPlayers}</p>
                                     :
                                     <p className='my-2'><span className='font-semibold'>Players: </span>{minPlayers} - {maxPlayers}</p>}
                                 <p className='my-2'><span className='font-semibold'>Play time: </span>{playTime} min</p>
