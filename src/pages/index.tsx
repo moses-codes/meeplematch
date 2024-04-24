@@ -36,7 +36,7 @@ export default function Home() {
               >
                 <h3 className="text-2xl font-bold">Track your board games</h3>
                 <div className="text-lg">
-                  Catalog your Board Game collection with ease.
+                  Catalog your board game collection with ease!
                 </div>
               </Link>
               <Link
@@ -46,7 +46,7 @@ export default function Home() {
               >
                 <h3 className="text-2xl font-bold">Find the perfect game</h3>
                 <div className="text-lg">
-                  Input your players, difficulty, and time. We&rsquo;ll choose the perfect game.
+                  Find the perfect game to match the vibe!
                 </div>
               </Link>
             </div>

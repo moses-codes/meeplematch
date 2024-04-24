@@ -35,12 +35,9 @@ export default function Search() {
     const { data: games } = api.boardGames.getUserGameIds.useQuery(undefined, {
         onSuccess: (data) => {
             setBoardGames(data)
-            console.log(data)
         },
 
     });
-
-    console.log(games)
 
     interface SearchResult {
         title: string;

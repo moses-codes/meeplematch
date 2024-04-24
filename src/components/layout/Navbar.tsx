@@ -29,13 +29,13 @@ export default function Navbar() {
                 </ul>
             </div>
             <div className="navbar-end">
-                <AuthShowcase />
+                <AuthButton />
             </div>
         </div>
     )
 }
 
-function AuthShowcase() {
+function AuthButton() {
     const { data: sessionData } = useSession();
     //use the useSession function from nextAuth
     // const { data: secretMessage } = api.example.getSecretMessage.useQuery(

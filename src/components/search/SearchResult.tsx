@@ -142,10 +142,7 @@ async function addGame(id: number, title: string) {
                 mechanics: []
             }
 
-            console.log(mechanics, bgInfo)
-
             //put all the info into this object & return it
-
 
         })
 
